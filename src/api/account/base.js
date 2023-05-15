@@ -1,7 +1,7 @@
 import { accountApi } from '@/api'
 
-const ACCOUNT_URL = '/acc/accounts'
-const ACCOUNT_CODE_URL = '/acc/account/'
+const ACCOUNT_URL = '/accountledger'
+const ACCOUNT_CODE_URL = '/account'
 const CUSTOMER_URL = '/customer'
 const CURRENT_ASSET_LIST_URL = '/currentAsset/assetList'
 const CURRENT_ASSET_CODE_LIST_URL = '/account/account/accountList'
@@ -61,7 +61,7 @@ function fetchAccountCode(searchCode) {
  * @returns {*}
  */
 function fetchAccountCodeList() {
-    return accountApi.get(`${ACCOUNT_CODE_URL}`)
+    return accountApi.get(`${ACCOUNT_CODE_URL}/accountList`)
 }
 
 /**
@@ -102,7 +102,7 @@ function fetchAccountLedger(searchCode) {
  */
 function fetchGeneralAccountLedger(searchCode) {
     const { startDate, endDate } = searchCode
-    return accountApi.get(`${ACCOUNT_URL}/`,
+    return accountApi.get(`${ACCOUNT_URL}/accountledgerlist`,
         {
             params: {
                 startDate,
