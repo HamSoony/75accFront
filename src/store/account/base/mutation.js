@@ -83,6 +83,7 @@ export default {
     state.tableColumns = tableColumns[0].tableColumns
   },
 
+
   DELETE_CUSTOMER_CODE(state,id){
     console.log('뮤테이션삭제',state.id)
     state.id = state.customerList.filter((item)=>item.id !== id);

@@ -173,12 +173,14 @@ export default {
     }
   },
 
+
   async DELETE_CUSTOMER_CODE({commit}, id){
     try {
       console.log('커스터머코드',id)
        await deleteCustomerCode(id)
       commit('DELETE_CUSTOMER_CODE',id)
       return null
+
     } catch (err){
       throw new Error(err)
     }
