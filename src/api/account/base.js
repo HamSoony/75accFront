@@ -2,6 +2,7 @@ import { accountApi } from '@/api'
 
 const ACCOUNT_URL = '/acc/accounts'
 const ACCOUNT_CODE_URL = '/acc/account/'
+const ACCOUNT_CODE_URL = '/acc/account/'
 const CURRENT_ASSET_LIST_URL = '/currentAsset/assetList'
 const CURRENT_ASSET_CODE_LIST_URL = '/account/account/accountList'
 const FIND_CURRENT_ASSET_BY_CODE_LIST = '/currentAsset/findAssetByCodeList'
