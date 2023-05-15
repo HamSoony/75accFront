@@ -180,6 +180,13 @@ export default {
     ...mapState('account/account', ['journalList']),
 
   },
+  mounted() {
+    // $route.params에서 'selectedSlip' 매개변수 값을 받음
+    this.SlipNo = this.$route.params.SlipNo;
+    console.log("슬립넘어왔냐",this.SlipNo)
+    // 'selectedSlip' 값을 사용하여 필요한 작업을 수행
+
+  },
   methods: {
     // 액션을 가져옴
     ...mapActions('account/account', ['SEARCH_JOURNAL']),

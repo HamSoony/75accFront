@@ -23,7 +23,7 @@ function selectSlips() {
  * @returns {*}
  */
 function selectSlip(slipNo) {
-  return accountApi.get(`${SLIP_URL}/${slipNo}`)
+  return accountApi.get(`/account/slip/${slipNo}`)
 }
 
 /**
@@ -57,7 +57,7 @@ function registerSlip(slip) {
  * @returns {*}
  */
 function editSlip(slip) {
-  return accountApi.put(`${SLIP_URL}`, slip)
+  return accountApi.put("/account/slip", slip)
 }
 
 /**

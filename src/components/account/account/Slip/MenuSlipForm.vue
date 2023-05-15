@@ -21,7 +21,7 @@
         분개추가
       </b-button>
       <b-button
-          v-if="activeButton!=='addSlip'"
+          v-if="false"
           variant="relief-primary"
           class="bt"
           @click="editJouranDetail"

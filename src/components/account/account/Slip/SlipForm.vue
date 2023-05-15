@@ -198,6 +198,7 @@ export default {
       deleteItem: [],
       editeItem: [],
       logMessage: '',
+      SlipNo:'',
 
     }
   },
@@ -211,6 +212,7 @@ export default {
   created() {
     this.FETCH_ALL_SLIP()
   },
+
   methods: {
     // 액션을 가져옴
     ...mapActions('account/account', ['FETCH_ALL_SLIP', 'DELETE_SLIP']),
