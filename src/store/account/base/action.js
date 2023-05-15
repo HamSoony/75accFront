@@ -167,20 +167,20 @@ export default {
 
       const {data} = await searchCustomerInfoList()
       console.log(data)
-      console.log('커스터머리스트액션',data.accountCustomerList)
-      commit('SEARCH_CUSTOMER_INFO', data.accountCustomerList)
-      return data
+      commit('SEARCH_CUSTOMER_INFO', data)
     } catch (err){
       throw new Error(err)
     }
   },
 
-  async DELETE_CUSTOMER_CODE({commit}, customerCode){
+
+  async DELETE_CUSTOMER_CODE({commit}, id){
     try {
-      console.log('커스터머코드',customerCode)
-       await deleteCustomerCode(customerCode)
-      commit('DELETE_CUSTOMER_CODE',customerCode)
-      return data
+      console.log('커스터머코드',id)
+       await deleteCustomerCode(id)
+      commit('DELETE_CUSTOMER_CODE',id)
+      return null
+
     } catch (err){
       throw new Error(err)
     }

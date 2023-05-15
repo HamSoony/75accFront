@@ -2,6 +2,7 @@ import { accountApi } from '@/api'
 
 const ACCOUNT_URL = '/acc/accounts'
 const ACCOUNT_CODE_URL = '/acc/account/'
+const CUSTOMER_URL = '/customer'
 const CURRENT_ASSET_LIST_URL = '/currentAsset/assetList'
 const CURRENT_ASSET_CODE_LIST_URL = '/account/account/accountList'
 const FIND_CURRENT_ASSET_BY_CODE_LIST = '/currentAsset/findAssetByCodeList'
@@ -134,6 +135,7 @@ function fetchAccountControllCode() {
  * 거래처조회 임시
  */
 function searchCustomerInfoList() {
+<<<<<<< HEAD
     return accountApi.get('/base/customers')
 }
 
@@ -141,13 +143,27 @@ function deleteCustomerCode(customerCode){
     return accountApi.delete('/base/deleteNormalCustormer',
         {
             params:{customerCode}
+=======
+    return accountApi.get(`${CUSTOMER_URL}/customers`)
+}
+
+function deleteCustomerCode(id){
+    console.log(id)
+    return accountApi.delete(`${CUSTOMER_URL}/customer`,
+        {
+            params:{id}
+>>>>>>> 1ec9268e0bb36e937f3f2e01456027bba4367c53
         })
 }
 
 function saveCustomer(newCustomer){
     console.log("api  : ")
     console.log(newCustomer)
+<<<<<<< HEAD
     return accountApi.post('/base/saveNewCustomer',newCustomer)
+=======
+    return accountApi.post(`${CUSTOMER_URL}/customer`,newCustomer)
+>>>>>>> 1ec9268e0bb36e937f3f2e01456027bba4367c53
 }
 
 export {
