@@ -33,31 +33,46 @@ const accountRouter = [
       ],
     },
   },
-  // 계정별 원장
-  {
-    path: '/acc/base/accountLedger',
-    name: 'accountLedger',
-    // eslint-disable-next-line import/no-unresolved
-    component: () => import('@/views/account/base/AccountLedgerPage.vue'),
-  },
-  // 총계정원장
-  {
-    path: '/acc/base/generalAccountLedger',
-    name: 'generalAccountLedger',
-    // eslint-disable-next-line import/no-unresolved
-    component: () => import('@/views/account/base/GeneralAccountLedgerPage.vue'),
-  },
+
+
   // 계정과목관리
   {
     path: '/acc/base/accountCodeManager',
     name: 'accountCodeManager',
     // eslint-disable-next-line import/no-unresolved
     component: () => import('@/views/account/base/AccountCodeManagerPage.vue'),
+    meta: {
+      pageTitle: '계정과목관리',
+      breadcrumb: [
+        {
+          text: '기초정보관리',
+          active: true,
+        },
+        {
+          text: '계정과목관리',
+          active: true,
+        },
+      ],
+    },
   },
+
   {
     path: '/acc/base/customerManager',
     name: 'customerManager',
     component: () => import('@/views/account/base/CustomerManagerPage.vue'),
+    meta: {
+      pageTitle: '거래처관리',
+      breadcrumb: [
+        {
+          text: '기초정보관리',
+          active: true,
+        },
+        {
+          text: '거래처관리',
+          active: true,
+        },
+      ],
+    },
   },
   ...AccountRoute,
   ...StatementRoute,

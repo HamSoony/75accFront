@@ -7,6 +7,7 @@ export default [
   {
     title: '전표',
     route: 'slipHome',
+    icon: 'PaperclipIcon',
     children: [
       {
         title: '전표조회',
@@ -35,6 +36,7 @@ export default [
   {
     title: '장부관리',
     route: 'ManegerLeder',
+    icon: 'BookIcon',
     children: [
       {
         title: '계정별원장',
@@ -61,6 +63,7 @@ export default [
   {
     title: '결산/재무제표관리',
     route: 'result',
+    icon: 'TrendingUpIcon',
     children: [
       {
         title: '합계잔액시산표',
@@ -98,6 +101,7 @@ export default [
   {
     title: '고정자산관리',
     route: { name: 'assetHome' },
+    icon: 'MonitorIcon',
     children: [
       {
         title: '고정자산조회',
@@ -115,6 +119,7 @@ export default [
   {
     title: '기초정보관리',
     route: { name: 'baseInfoManager' },
+    icon: 'SidebarIcon',
     children: [
       {
         title: '계정과목관리',

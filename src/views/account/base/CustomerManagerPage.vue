@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>거래처관리</h1>
 
     <CustomerManagerForm />
 
