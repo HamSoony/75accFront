@@ -24,7 +24,8 @@ export default {
   async FETCH_ACCOUNT_CODE_LIST({ commit }) {
     try {
       const { data } = await fetchAccountCodeList()
-      commit('SET_ACCOUNT_CODE_LIST', data.accountCodeList)
+      console.log(data)
+      commit('SET_ACCOUNT_CODE_LIST', data.accountList)
       return data
     } catch (err) {
       throw new Error(err)

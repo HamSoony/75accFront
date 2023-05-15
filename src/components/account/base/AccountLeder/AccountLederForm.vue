@@ -117,7 +117,7 @@
     >
       <p class="my-5">
         <AccountCodeModal
-          v-model:value="accountCode"
+             v-model:value="accountCode"
           condition="accountCode"
         />
       </p>
@@ -164,7 +164,7 @@ export default {
         },
         {
           label: '계정명',
-          field: 'accountName',
+          field: 'acctName',
         },
         {
           label: '차변금액',
@@ -176,7 +176,7 @@ export default {
         },
         {
           label: '거래처',
-          field: 'customerName',
+          field: 'cterName',
         },
 
         {
@@ -184,7 +184,7 @@ export default {
           field: 'expenseReport',
         },
       ],
-      fields: ['accountInnerCode', 'accountName'],
+      fields: ['acctInnerCode', 'acctName'],
       rows: [],
       searchTerm: '',
       endDate: '',

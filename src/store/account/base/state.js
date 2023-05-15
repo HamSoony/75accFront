@@ -5,6 +5,7 @@ export default {
   namespaced: true,
   state: {
     accountCodeList: [],
+    accountList: [],
     accountCustomerList: [],
     accountControllCodeList: [],
     accountLederList: [],
