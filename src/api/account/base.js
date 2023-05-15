@@ -138,6 +138,7 @@ function searchCustomerInfoList() {
     return accountApi.get(`${CUSTOMER_URL}/customers`)
 }
 
+
 function deleteCustomerCode(id){
     console.log(id)
     return accountApi.delete(`${CUSTOMER_URL}/customer`,
