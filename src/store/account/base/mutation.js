@@ -24,8 +24,8 @@ export default {
    * @param accountCodeList
    * @constructor
    */
-  SET_ACCOUNT_CODE_LIST(state, accountCodeList) {
-    state.accountCodeList = accountCodeList
+  SET_ACCOUNT_CODE_LIST(state, accountList) {
+    state.accountList = accountList
   },
 
   // 계정코드 셋팅

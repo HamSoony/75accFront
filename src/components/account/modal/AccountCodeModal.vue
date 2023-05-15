@@ -20,7 +20,8 @@
         select-mode="single"
         selectable
         :fields="fields"
-        :items="accountCodeList"
+        :items="accountList"
+        :filter="searchAccountCode"
         @row-selected="onRowSelected"
     />
   </div>
@@ -48,13 +49,13 @@ export default {
     return {
       searchAccountCode: '',
       searchAccountName: '',
-      fields: ['accountInnerCode', 'accountName'],
+      fields: ['acctInnerCode', 'acctName'],
       value: {}
     }
   },
 
   computed: {
-    ...mapState('account/base', ['accountCodeList']),
+    ...mapState('account/base', ['accountList']),
 
   },
   created() {
@@ -90,9 +91,10 @@ export default {
       //   const { accountName } = selectedItem[0]
       //   this.$emit('input', accountName)
       // }
-      const { accountCode,accountName } = selectedItem[0]
-      this.value = { accountCode,accountName }
-      this.$emit('input', this.value)
+      console.log(selectedItem)
+      const { acctInnerCode,acctName } = selectedItem[0]
+      this.value = { acctInnerCode,acctName }
+      this.$emit('input', this.value.acctInnerCode)
     },
 
   },

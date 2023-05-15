@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>계정과목관리</h1>
 
     <AccountCodeManagerForm />
 

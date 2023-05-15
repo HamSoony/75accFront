@@ -135,7 +135,7 @@ export default {
 
   data() {
     return {
-      pageLength: 10,
+      pageLength: 50,
       columns: [
         {
           label: '차변',
@@ -154,7 +154,7 @@ export default {
           field: 'cashDebits',
         },
         {
-          label: '개정과목',
+          label: '계정과목',
           field: 'accountName',
         },
         {
