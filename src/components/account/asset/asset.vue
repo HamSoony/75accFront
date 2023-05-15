@@ -4,15 +4,12 @@
       <b-row align-v="center">
         <b-col sm="1" style="padding-bottom: 10px">자산코드</b-col>
         <b-col sm="3" style="padding-bottom: 10px">
-          <b-form-select
-              id="name"
-              v-model="selected"
-              :options="GET_ASSET_CODE_LIST"
-              width="70%"
-              @change="selectedCode"
-          >
-            <b-form-select-option :value="null">계정과목을 선택해주세요</b-form-select-option>
-          </b-form-select>
+          <b-form-input
+              placeholder="Search"
+              type="text"
+              class="d-inline-block"
+              @input="advanceSearch1"
+          />
         </b-col>
         <b-col cols="1" style="padding-bottom: 10px">자산명</b-col>
         <b-col cols="3" style="padding-bottom: 10px" >
@@ -20,7 +17,7 @@
               placeholder="Search"
               type="text"
               class="d-inline-block"
-              @input="advanceSearch1"
+              @input="advanceSearch2"
           />
         </b-col>
 
@@ -39,42 +36,41 @@
           </b-form-select>
         </b-col>
 
-        <b-col cols="1">자산분류명</b-col>
+        <b-col cols="1">인수날짜</b-col>
         <b-col cols="3">
-          <b-form-select
-              id="name"
-              v-model="selected"
-              :options="GET_ASSET_CODE_LIST"
-              width="70%"
-              @change="selectedCode"
-          >
-            <b-form-select-option :value="null">계정과목을 선택해주세요</b-form-select-option>
-          </b-form-select>
+          <b-form-group>
+            <b-form-input
+                placeholder="Search"
+                type="date"
+                class="d-inline-block"
+            />
+          </b-form-group>
         </b-col>
       </b-row>
     </b-container>
 
     <b-container>
       <vue-good-table
-          :columns="columns"
-          :rows="findCurrentAssetList"
-          :line-numbers="false"
-          :select-options="{
-        enabled: true,
-        selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
-        selectionInfoClass: 'custom-class',
-        selectionText: '개가 선택되었습니다',
-        clearSelectionText: 'clear',
-        disableSelectInfo: false, // disable the select info panel on top
-        selectAllByGroup: true, // when used in combination with a grouped table, add a checkbox in the header row to check/uncheck the entire group
-      }"
-          :pagination-options="{
-        enabled: true,
-        perPage:pageLength
-      }"
-          theme="white-rhino"
-          @on-selected-rows-change="selectionChanged"
-      />
+        :columns="columns"
+        :rows="findCurrentAssetList"
+        :line-numbers="false"
+        :select-options="{
+          enabled: true,
+          selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
+          selectionInfoClass: 'custom-class',
+          selectionText: '개가 선택되었습니다',
+          clearSelectionText: 'clear',
+          disableSelectInfo: false, // disable the select info panel on top
+          selectAllByGroup: true, // when used in combination with a grouped table, add a checkbox in the header row to check/uncheck the entire group
+        }"
+        :pagination-options="{
+          enabled: true,
+          perPage:pageLength
+        }"
+        @on-selected-rows-change="selectionChanged"
+        theme="polar-bear"
+    />
+
 
       <!--      <b-row>-->
       <!--        <b-col class="table">-->
@@ -103,7 +99,6 @@ export default {
       selected: null,
       accountCodeList: [],
       fields: ['accountInnerCode', 'accountName'],
-
       dpts: {
         'administration' : '총무부',
         'sales' : '영업부',
@@ -162,6 +157,7 @@ export default {
         }
       ],
       rows: [],
+      searchValue : '',
     };
 
   },
@@ -173,12 +169,22 @@ export default {
     ...mapGetters('account/base', ['GET_CURRENT_ASSET_LIST', 'GET_ASSET_CODE_LIST']),
 
   },
+
   created() {
     this.FETCH_CURRENT_ASSET_LIST(), this.FETCH_ASSET_CODE_LIST()
   },
+
   methods: {
     ...mapActions('account/base', ['FETCH_CURRENT_ASSET_LIST', 'FETCH_ASSET_CODE_LIST']),
-
+    selectionChanged(params){
+      console.log("params: " + params)
+    },
+    advanceSearch1(val) {
+      this.searchValue = val
+    },
+    advanceSearch2(val) {
+      this.searchValue = val
+    }
     /**
      *
      * 안내문구 클릭시 alert창을 띄워서 처리
