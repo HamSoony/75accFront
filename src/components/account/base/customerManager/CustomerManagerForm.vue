@@ -122,6 +122,7 @@ export default {
       console.log("deleteData")
       console.log('de;eteData2',customerCode)
       this.$store.dispatch('account/base/DELETE_CUSTOMER_CODE', customerCode)
+      setTimeout(()=>{this.$store.dispatch('account/base/SEARCH_CUSTOMER_INFO_LIST'), 200})
     },
     async gridInputModal(rowData){
       // await this.$store.dispatch('account/base/GET_CUSTOMER_LIST',rowData[0].item)
