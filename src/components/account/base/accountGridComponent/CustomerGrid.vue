@@ -122,13 +122,13 @@ export default {
   },
   data() {
     return {
-      workplaceCode:'',
-      customerName:'',
-      customerCeo:'',
+      wpCode:'',
+      cterName:'',
+      cterCeo:'',
       businessLicenseNumber:'',
-      customerBusinessConditions:'',
-      customerBusinessItems:'',
-      customerBasicAddress:'',
+      cterBusinessConditions:'',
+      cterBusinessItems:'',
+      cterBasicAddress:'',
       gridData: [],
       tableColumnsData: [],
       startDate: '',
@@ -136,7 +136,7 @@ export default {
       searchMethod: '',
       registMethod: '',
       selectMode: 'single',
-      customerCode:'',
+      id:'',
       selectOption: [
         'single', 'multiple',
       ],
@@ -194,8 +194,8 @@ export default {
     deleteButton(item) {
       console.log('삭제버튼')
       console.log('그리드에서item:',item)
-      console.log('넘길거: ', this.customerCode)
-      let customerCode=this.customerCode
+      console.log('넘길거: ', this.id)
+      let customerCode=this.id
       if(!customerCode){
         alert("행을 누르세용~~~")
         return
@@ -234,8 +234,8 @@ export default {
     itemCodeClick(item) {
       console.log("itemCodeClick 실행")
       console.log("itemList::::",item)
-      console.log("item",item.customerCode)
-      this.customerCode=item.customerCode
+      console.log("item",item.id)
+      this.id=item.id
       /*       const newObject = item.detailCode
 
             this.itemCodeInput = newObject */

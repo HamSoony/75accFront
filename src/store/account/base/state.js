@@ -10,7 +10,7 @@ export default {
     accountLederList: [],
     generalAccountLedgerList: [],
     customerList: [],
-    customerCode:'',
+    id:'',
 
     assetCodeList: [],
     findCurrentAssetList:[],
