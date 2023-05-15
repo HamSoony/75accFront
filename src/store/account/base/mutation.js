@@ -83,9 +83,9 @@ export default {
     state.tableColumns = tableColumns[0].tableColumns
   },
 
-  DELETE_CUSTOMER_CODE(state,customerCode){
-    console.log('뮤테이션삭제',state.customerCode)
-    state.customerList = state.customerList.filter((item)=>item.customerCode !== customerCode);
+  DELETE_CUSTOMER_CODE(state,id){
+    console.log('뮤테이션삭제',state.id)
+    state.id = state.customerList.filter((item)=>item.id !== id);
   },
   ADD_CUSTOMER_CODE(state, customerData){
     console.log('뮤테이션오냐?^__^')
