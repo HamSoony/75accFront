@@ -134,20 +134,20 @@ function fetchAccountControllCode() {
  * 거래처조회 임시
  */
 function searchCustomerInfoList() {
-    return accountApi.get('/base/customers')
+    return accountApi.get('/customer/customers')
 }
 
-function deleteCustomerCode(customerCode){
-    return accountApi.delete('/base/deleteNormalCustormer',
+function deleteCustomerCode(id){
+    return accountApi.delete('/customer/customer',
         {
-            params:{customerCode}
+            params:{id}
         })
 }
 
 function saveCustomer(newCustomer){
     console.log("api  : ")
     console.log(newCustomer)
-    return accountApi.post('/base/saveNewCustomer',newCustomer)
+    return accountApi.post('/customer/customer',newCustomer)
 }
 
 export {

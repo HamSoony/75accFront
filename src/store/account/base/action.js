@@ -168,7 +168,7 @@ export default {
       const {data} = await searchCustomerInfoList()
       console.log(data)
       console.log('커스터머리스트액션',data.accountCustomerList)
-      commit('SEARCH_CUSTOMER_INFO', data.accountCustomerList)
+      commit('SEARCH_CUSTOMER_INFO', data)
       return data
     } catch (err){
       throw new Error(err)
