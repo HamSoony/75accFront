@@ -136,11 +136,9 @@ export default {
       searchMethod: '',
       registMethod: '',
       selectMode: 'single',
-<<<<<<< HEAD
       customerCode:'',
-=======
       id:'',
->>>>>>> 1ec9268e0bb36e937f3f2e01456027bba4367c53
+
       selectOption: [
         'single', 'multiple',
       ],
@@ -198,13 +196,9 @@ export default {
     deleteButton(item) {
       console.log('삭제버튼')
       console.log('그리드에서item:',item)
-<<<<<<< HEAD
-      console.log('넘길거: ', this.customerCode)
-      let customerCode=this.customerCode
-=======
       console.log('넘길거: ', this.id)
       let customerCode=this.id
->>>>>>> 1ec9268e0bb36e937f3f2e01456027bba4367c53
+
       if(!customerCode){
         alert("행을 누르세용~~~")
         return
@@ -243,13 +237,9 @@ export default {
     itemCodeClick(item) {
       console.log("itemCodeClick 실행")
       console.log("itemList::::",item)
-<<<<<<< HEAD
-      console.log("item",item.customerCode)
-      this.customerCode=item.customerCode
-=======
       console.log("item",item.id)
       this.id=item.id
->>>>>>> 1ec9268e0bb36e937f3f2e01456027bba4367c53
+
       /*       const newObject = item.detailCode
 
             this.itemCodeInput = newObject */
