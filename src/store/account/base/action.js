@@ -44,7 +44,7 @@ export default {
   async FETCH_CURRENT_ASSET_LIST({ commit }) {
     try {
       const { data } = await fetchCurrentAssetList()
-      commit('SET_CURRENT_ASSET_LIST', data.list)
+      commit('SET_CURRENT_ASSET_LIST', data)
       console.log(data)
     } catch (err) {
       throw new Error(err)
