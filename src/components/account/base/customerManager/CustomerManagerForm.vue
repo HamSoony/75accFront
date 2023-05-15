@@ -100,7 +100,7 @@ export default {
         {key: 'cterCeo', label: '대표자', sortable: true,},
         {key: 'businessLicenseNumber', label: '사업자등록번호', sortable: true,},
         {key: 'cterBusinessConditions', label: '업태', sortable: true},
-        {key: 'cterBusinessItems', label: '종목', sortable: true},
+        {key: 'cterrBusinessItems', label: '종목', sortable: true},
         {key: 'cterBasicAddress', label: '거래처기본주소', sortable: true}
       ]
     }]
@@ -122,6 +122,7 @@ export default {
       console.log("deleteData")
       console.log('de;eteData2',customerCode)
       this.$store.dispatch('account/base/DELETE_CUSTOMER_CODE', customerCode)
+      setTimeout(()=>{this.$store.dispatch('account/base/SEARCH_CUSTOMER_INFO_LIST'), 200})
     },
     async gridInputModal(rowData){
       // await this.$store.dispatch('account/base/GET_CUSTOMER_LIST',rowData[0].item)
