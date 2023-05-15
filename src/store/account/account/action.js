@@ -29,9 +29,9 @@ export default {
    */
   async FETCH_SLIP({ commit }, slipNo) { // 객체로 넘어오면 {}
     try {
-      const { data } = await selectSlip(slipNo)
-      commit('SET_SILP', data.slipForm)
-      return data.slipForm
+      let {data}  = await selectSlip(slipNo)
+      commit('SET_SILP', data.slip)
+      return data.slip
     } catch (err) {
       throw new Error(err)
     }
@@ -76,7 +76,7 @@ export default {
   async EDIT_SLIP(_, slip) { // 객체로 넘어오면 {}
     try {
       const response = await editSlip(slip)
-      return response.data.updateSlipNo
+      return response.data.slip
     } catch (err) {
       throw new Error(err)
     }

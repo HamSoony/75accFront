@@ -39,7 +39,7 @@
         </template>
         <template #cell(cterCode)="data">
           <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'customerCode'" type="text" v-model="newJournalForm[data.index].cterCode" @blur="editCellBlur(data)" ></b-form-input>
-          <span v-else v-b-modal.cterCode2 @click="setEditIndex(data.index)">{{data.value}}</span>
+          <span v-else v-b-modal.CustomerCode2 @click="setEditIndex(data.index)">{{data.value}}</span>
         </template>
         <template #cell(leftDebtorPrice)="data">
           <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'leftDebtorPrice'" type="text" v-model="newJournalForm[data.index].leftDebtorPrice" @blur="editCellBlur(data)" ></b-form-input>
@@ -432,7 +432,7 @@ export default {
         confirmButtonText: '해당 전표를 보시겠습니까?',
       }).then(result => {
         if (result.isConfirmed) {
-          this.$router.push({name: 'journalForm', params: {selectedSlip: newSlipNo}})
+          this.$router.push({name: 'journalForm', params: {SlipNo: newSlipNo}})
         }
       })
     },

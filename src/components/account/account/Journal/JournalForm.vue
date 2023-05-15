@@ -39,7 +39,7 @@
         </template>
         <template #cell(cterCode)="data">
           <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'customerCode'" type="text" v-model="newJournalForm[data.index].cterCode" @blur="editCellBlur(data)" ></b-form-input>
-          <span v-else v-b-modal.cterCode2 @click="setEditIndex(data.index)">{{data.value}}</span>
+          <span v-else v-b-modal.CustomerCode2 @click="setEditIndex(data.index)">{{data.value}}</span>
         </template>
         <template #cell(leftDebtorPrice)="data">
           <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'leftDebtorPrice'" type="text" v-model="newJournalForm[data.index].leftDebtorPrice" @blur="editCellBlur(data)" ></b-form-input>
@@ -293,6 +293,26 @@ export default {
 
       departmentSelectedData:{},
 
+      slipFiled : [
+        { key: 'acctPeriodNo', label: '기수일련번호' },
+        { key: 'id', label: '전표일련번호' },
+        { key: 'slipType', label: '전표유형' },
+        { key: 'reportingDate', label: '작성날짜' },
+        { key: 'reportingEmpCode', label: '작성자코드' },
+        { key: 'expenseReport', label: '품의내역' },
+        { key: 'slipStatus', label: '승인상태' },
+      ],
+
+      journalFiled : [
+        { key: 'id', label: '분개일련번호' },
+        { key: 'acctInnerCode', label: '계정코드' },
+        { key: 'acctName', label: '계정과목' },
+        { key: 'balanceDivision', label: '대차구분' },
+        { key: 'cterCode', label: '거래처코드' },
+        { key: 'cterName', label: '거래처명' },
+        { key: 'leftDebtorPrice', label: '차변금액' },
+        { key: 'rightCreditsPrice', label: '대변금액' },
+      ],
 
 
 
@@ -302,8 +322,6 @@ export default {
       /**
        * 그리드 필드
        */
-      slipFiled,
-      journalFiled,
       JournaldetailFiled,
       /**
        * 그리드에 보여지는 객체
@@ -332,7 +350,7 @@ export default {
       /**
        *  버튼 활성화
        */
-      activeButton: 'addSlip',
+      activeButton: 'journalForm',
       addBtStatus: false,
       addJournalBt: false,
 
@@ -344,15 +362,30 @@ export default {
   created() {
     this.GET_WORKPLACE_CODE(sessionStorage.getItem('CompanyCode'))
   },
+  mounted() {
+    setTimeout(() => {
+      this.resultSlipForm=this.slipForm
+      this.newSlipForm.push(this.slipForm)
+      this.slipForm.journals.forEach( (j) => this.newJournalForm.push(j))
+      this.totalJournal()
+      console.log("newJournalForm 나오냐?",this.newJournalForm)
+      console.log("resultSlipForm 나오냐?",this.resultSlipForm)
+      console.log("newSlipForm 나오냐?1",this.newSlipForm)
+      console.log("newJournalForm 나오냐?",this.newJournalForm)
+      console.log("newJournalDetailForm 나오냐?",this.newJournalDetailForm)
+    },200)
+
+  },
 
   computed: {
 
     // 핵심입니다!!!   모듈명 .   [받아오는값]
     ...mapState('auth', ['workplaceList']),
+    ...mapState('account/account', ['slipForm']),
   },
 
   methods: {
-    ...mapActions('account/account', ['CREATE_SLIP', 'FETCH_SLIP']),
+    ...mapActions('account/account', ['CREATE_SLIP', 'FETCH_SLIP','EDIT_SLIP']),
     ...mapActions('auth', ['GET_WORKPLACE_CODE']),
     /**
      * 모달 ok버튼 클릭시 실행되는 함수
@@ -507,6 +540,7 @@ export default {
       console.log("item",item)
       this.dataIndex=index
       this.selectedJournal=item
+      console.log("this.newJournalDetailForm.wpCode",this.newJournalDetailForm)
       this.newJournalDetailForm.wpCode=item.journalDetail.wpCode
       this.newJournalDetailForm.wpName=item.journalDetail.wpName
       this.newJournalDetailForm.deptCode=item.journalDetail.deptCode

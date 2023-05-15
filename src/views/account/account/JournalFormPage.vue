@@ -13,7 +13,7 @@ export default {
   },
 
   props: {
-    selectedSlip: {
+    SlipNo: {
       type: String,
       required: true,
     },
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     async  fetchSlipData() {
-      await this.$store.dispatch('account/account/FETCH_SLIP', this.selectedSlip)
+      await this.$store.dispatch('account/account/FETCH_SLIP', this.SlipNo)
     },
   },
 }
