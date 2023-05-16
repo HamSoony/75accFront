@@ -291,11 +291,12 @@ export default {
      * 전표상세보기버튼
      */
     showJournalForm() {
-      const selectedSlip = this.$refs.myTable.selectedRows.map(v => v.slipNo)[0]
+      const selectedSlip = this.$refs.myTable.selectedRows[0].id
+      console.log("선택된 전표 번호",selectedSlip)
       if (this.$refs.myTable.selectedRows.length > 1) {
         Vue.$toast.info('한개만 선택해주세요')
       } else {
-        this.$router.push({ name: 'journalForm', params: { selectedSlip } })
+        this.$router.push({ name: 'journalForm', params: { SlipNo: selectedSlip } })
       }
     },
 

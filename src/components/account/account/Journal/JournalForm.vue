@@ -368,11 +368,6 @@ export default {
       this.newSlipForm.push(this.slipForm)
       this.slipForm.journals.forEach( (j) => this.newJournalForm.push(j))
       this.totalJournal()
-      console.log("newJournalForm 나오냐?",this.newJournalForm)
-      console.log("resultSlipForm 나오냐?",this.resultSlipForm)
-      console.log("newSlipForm 나오냐?1",this.newSlipForm)
-      console.log("newJournalForm 나오냐?",this.newJournalForm)
-      console.log("newJournalDetailForm 나오냐?",this.newJournalDetailForm)
     },200)
 
   },
@@ -445,19 +440,20 @@ export default {
       const addLeftPrice = this.resultSlipForm.journals.map(v => Number(v.leftDebtorPrice)).reduce((pre, curr) => pre + curr, 0)
       const addRightPrice = this.resultSlipForm.journals.map(v => Number(v.rightCreditsPrice)).reduce((pre, curr) => pre + curr, 0)
 
-      const newSlipNo = await this.CREATE_SLIP(this.resultSlipForm)
-      console.log(newSlipNo)
-      this.openAlert(newSlipNo)
+      const updateSlip = await this.EDIT_SLIP(this.resultSlipForm)
+      const SlipNo = updateSlip.id
+      console.log(SlipNo)
+      this.openAlert(SlipNo)
     },
 
     /**
      * 성공시 호출되는 alert창
      * 새로 생긴 전표를 router를 이용하여 보냄
      */
-    openAlert(newSlipNo) {
+    openAlert(SlipNo) {
       this.$swal.fire({
         title: '전표작성 성공!',
-        text: `전표번호${newSlipNo}`,
+        text: `전표번호${SlipNo}`,
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -465,7 +461,7 @@ export default {
         confirmButtonText: '해당 전표를 보시겠습니까?',
       }).then(result => {
         if (result.isConfirmed) {
-          this.$router.push({name: 'journalForm', params: {selectedSlip: newSlipNo}})
+          this.$router.push({name: 'journalForm', params: {selectedSlip: SlipNo}})
         }
       })
     },

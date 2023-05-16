@@ -181,11 +181,11 @@ export default {
       columns: [
         {
           label: '전표일련번호',
-          field: 'slipNo',
+          field: 'id',
         },
         {
           label: '기수일련번호',
-          field: 'accountPeriodNo',
+          field: 'acctPeriodNo',
         },
         {
           label: '전표유형',

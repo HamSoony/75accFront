@@ -99,8 +99,11 @@ export default {
     // 테이블 선택한 아이템 가져오기
     onRowSelected(selectedItem) {
 
-      const { customerCode,customerName } = selectedItem.row
-      this.value = { customerCode,customerName }
+      console.log("selectedItem",selectedItem)
+      const cterCode = selectedItem.row.customerCode
+      const cterName = selectedItem.row.customerName
+      this.value = { "cterCode":cterCode,"cterName":cterName }
+      console.log("value",this.value)
       this.$emit('input', this.value)
     },
 
