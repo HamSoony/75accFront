@@ -95,7 +95,7 @@ const StatementRoute = [
       pageTitle: '합계잔액시산표',
       breadcrumb: [
         {
-          text: '결산/재무표관리',
+          text: '결산/재무제표관리',
         },
         {
           text: '합계잔액시산표',
@@ -116,7 +116,7 @@ const StatementRoute = [
       pageTitle: '손익계산서',
       breadcrumb: [
         {
-          text: '결산/재무표관리',
+          text: '결산/재무제표관리',
         },
         {
           text: '손익계산서',
@@ -137,7 +137,7 @@ const StatementRoute = [
       pageTitle: '재무상태표',
       breadcrumb: [
         {
-          text: '결산/재무표관리',
+          text: '결산/재무제표관리',
         },
         {
           text: '재무상태표',
@@ -157,7 +157,7 @@ const StatementRoute = [
       pageTitle: '월별손익계산서',
       breadcrumb: [
         {
-          text: '결산/재무표관리',
+          text: '결산/재무제표관리',
         },
         {
           text: '월별손익계산서',
@@ -177,7 +177,7 @@ const StatementRoute = [
       pageTitle: '현금흐름표',
       breadcrumb: [
         {
-          text: '결산/재무표관리',
+          text: '결산/재무제표관리',
         },
         {
           text: '현금흐름표',
@@ -197,7 +197,7 @@ const StatementRoute = [
       pageTitle: '원가명세서',
       breadcrumb: [
         {
-          text: '결산/재무표관리',
+          text: '결산/재무제표관리',
         },
         {
           text: '원가명세서',
