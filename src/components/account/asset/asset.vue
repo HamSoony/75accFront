@@ -1,6 +1,6 @@
 <template>
   <b-col>
-    <b-container class="b-container" >
+    <div class="test">
       <b-row align-v="center">
         <b-col sm="1" style="padding-bottom: 10px">자산코드</b-col>
         <b-col sm="3" style="padding-bottom: 10px">
@@ -12,7 +12,7 @@
           />
         </b-col>
         <b-col cols="1" style="padding-bottom: 10px">자산명</b-col>
-        <b-col cols="3" style="padding-bottom: 10px" >
+        <b-col cols="3" style="padding-bottom: 10px">
           <b-form-input
               placeholder="Search"
               type="text"
@@ -23,8 +23,8 @@
 
         <div class="w-100"></div>
 
-        <b-col cols="1" >자산분류코드</b-col>
-        <b-col cols="3" >
+        <b-col cols="1">자산분류코드</b-col>
+        <b-col cols="3">
           <b-form-select
               id="name"
               v-model="selected"
@@ -47,43 +47,79 @@
           </b-form-group>
         </b-col>
       </b-row>
-    </b-container>
+    </div>
 
-    <b-container>
-      <vue-good-table
-        :columns="columns"
-        :rows="findCurrentAssetList"
-        :line-numbers="false"
-        :select-options="{
-          enabled: true,
-          selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
-          selectionInfoClass: 'custom-class',
-          selectionText: '개가 선택되었습니다',
-          clearSelectionText: 'clear',
-          disableSelectInfo: false, // disable the select info panel on top
-          selectAllByGroup: true, // when used in combination with a grouped table, add a checkbox in the header row to check/uncheck the entire group
-        }"
-        :pagination-options="{
-          enabled: true,
-          perPage:pageLength
-        }"
-        @on-selected-rows-change="selectionChanged"
-        theme="polar-bear"
-    />
+    <div>
+      <b-table
+          :items="findCurrentAssetList"
+          :fields="columns2"
+          striped responsive="sm"
+      >
+        <template #cell(showDetails)="row">
+          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+          </b-button>
+        </template>
 
-
-      <!--      <b-row>-->
-      <!--        <b-col class="table">-->
-      <!--          <div>-->
-      <!--            <vue-good-table-->
-      <!--                :columns="columns"-->
-      <!--                :rows="rows"-->
-      <!--                :line-numbers="true"-->
-      <!--            />-->
-      <!--          </div>-->
-      <!--        </b-col>-->
-      <!--      </b-row>-->
-    </b-container>
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>자산코드 :</b></b-col>
+              <b-col>{{ row.item.assetCode.assetCode }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>인수비용 :</b></b-col>
+              <b-col>{{ row.item.assetCode.acquistionCost }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>감각삼각비용 :</b></b-col>
+              <b-col>{{ row.item.assetCode.depreciation }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>장부가치 :</b></b-col>
+              <b-col>{{ row.item.assetCode.bookValue }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>감각법 :</b></b-col>
+              <b-col>{{ row.item.assetCode.amortizationWay }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>상환마직막년도 :</b></b-col>
+              <b-col>{{ row.item.assetCode.amortizationFinalYear }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>내용연수 :</b></b-col>
+              <b-col>{{ row.item.assetCode.usefullife }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>감각비율 :</b></b-col>
+              <b-col>{{ row.item.assetCode.amortizationRate }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>개월수 :</b></b-col>
+              <b-col>{{ row.item.assetCode.month }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>일반상환비용 :</b></b-col>
+              <b-col>{{ row.item.assetCode.normalAmortization }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>누적삼각비용 :</b></b-col>
+              <b-col>{{ row.item.assetCode.raccumulatedAmortization }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>누적상환비용 :</b></b-col>
+              <b-col>{{ row.item.assetCode.accumulatedAmortization }}</b-col>
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>기말장부가치 :</b></b-col>
+              <b-col>{{ row.item.assetCode.bookValueend }}</b-col>
+            </b-row>
+            <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+          </b-card>
+        </template>
+      </b-table>
+    </div>
   </b-col>
 </template>
 
@@ -92,16 +128,18 @@ import {VueGoodTable} from 'vue-good-table';
 import {size} from "lodash";
 import {mapActions, mapGetters, mapState} from "vuex";
 import Vue from "vue";
+
 export default {
-  data(){
+  data() {
     return {
+      nweFindCurrentAssetList: [],
       assetType: [],
       selected: null,
       accountCodeList: [],
       fields: ['accountInnerCode', 'accountName'],
       dpts: {
-        'administration' : '총무부',
-        'sales' : '영업부',
+        'administration': '총무부',
+        'sales': '영업부',
         'Production': '생산부',
         'Procurement ': '구매부',
         'Human Resources ': '인사부',
@@ -110,54 +148,63 @@ export default {
         'Public Relations': '홍보부',
         'Technical ': '기술부'
       },
+      columns2: [
+        {'assetCode.assetCode': '자산코드'},
+        {'acctCode': '자산분류코드'},
+        {'acctName': '자산분류명'},
+        {'assetName': '자산명'},
+        {'progress': '인수날짜'},
+        {'finalizeStatus': '상태'},
+        {'showDetails': '상세보기'}
+      ],
       columns: [
         {
           label: '자산코드',
-          field: 'assetCode',
+          field: 'assetCode.assetCode',
           width: '16%',
-          tdClass :'text-center',
-          thClass :'text-center',
+          tdClass: 'text-center',
+          thClass: 'text-center',
         },
         {
           label: '자산분류코드',
           field: 'acctCode',
           width: '16%',
           style: 'text-align: center; , font-size: 12px;',
-          tdClass :'text-center',
-          thClass :'text-center',
+          tdClass: 'text-center',
+          thClass: 'text-center',
         },
         {
           label: '자산분류명',
           field: 'acctName',
           width: '16%',
-          tdClass :'text-center',
-          thClass :'text-center',
+          tdClass: 'text-center',
+          thClass: 'text-center',
         },
         {
           label: '자산명',
           field: 'assetName',
           width: '16%',
-          tdClass :'text-center',
-          thClass :'text-center',
+          tdClass: 'text-center',
+          thClass: 'text-center',
         },
         {
           label: '인수날짜',
           field: 'progress', // acquisitionDate
           width: '16%',
-          tdClass :'text-center',
-          thClass :'text-center',
+          tdClass: 'text-center',
+          thClass: 'text-center',
 
         },
         {
           label: '상태',
           field: 'finalizeStatus',
           width: '16%',
-          tdClass :'text-center',
-          thClass :'text-center',
+          tdClass: 'text-center',
+          thClass: 'text-center',
         }
       ],
       rows: [],
-      searchValue : '',
+      searchValue: '',
     };
 
   },
@@ -176,7 +223,7 @@ export default {
 
   methods: {
     ...mapActions('account/base', ['FETCH_CURRENT_ASSET_LIST', 'FETCH_ASSET_CODE_LIST']),
-    selectionChanged(params){
+    selectionChanged(params) {
       console.log("params: " + params)
     },
     advanceSearch1(val) {
@@ -206,35 +253,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.custom-search{
+.custom-search {
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
 }
-.test{
-  display:flex;
-  div{ padding-right: 10px; }
+
+.test {
+  display: flex;
+  div {
+    padding-right: 10px;
+  }
 }
+
 .my-1 {
   padding-inline: 10px;
 }
+
 .b-container {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   width: 100%;
-
-
 }
-.b-container2{
+
+.b-container2 {
   width: 100%;
   margin-top: 10px;
   background-color: white;
+
   .table td,
   .table th {
     font-size: 10px;
   }
 }
+
 .table {
   margin-top: 15px;
   background-color: white;
@@ -247,9 +300,11 @@ export default {
   padding-left: 40px;
   background-color: white;
   font-weight: bold;
+
   div {
     margin-bottom: 10px;
   }
+
   .secondRow {
     margin-bottom: 0px;
   }
@@ -260,4 +315,6 @@ export default {
   font-weight: bold;
 }
 
-</sty
+<
+/
+sty
