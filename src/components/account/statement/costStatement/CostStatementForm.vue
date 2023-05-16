@@ -53,7 +53,6 @@
       <template v-slot:cell(earlyCostSummary)="data">
         <div class="text-center">{{ data.value | formatNumber }}</div>
       </template>
-
     </b-table>
 
 
