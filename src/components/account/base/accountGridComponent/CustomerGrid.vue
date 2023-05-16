@@ -60,12 +60,22 @@
           @input-modal="inputModal"
           @ok="inputDataModal"
       />
+      <TableChangeModal
+          v-if="tableChangeModal"
+          :table-row-data="tableColumnsData"
+          :item="item"
+          @close="closeEditModal"
+          @edit-modal="editModal"
+          @ok="inputDataModal"
+      />
     </transition>
   </b-card>
 </template>
 
 <script>
 import TableEditModal from '@/components/common/modal/TableEditModal.vue'
+import TableChangeModal from '@/components/common/modal/TableChangeModal.vue'
+
 import BCardCode from '@core/components/b-card-code/BCardCode.vue'
 import {
   BAvatar,
@@ -87,6 +97,7 @@ import {mapMutations, mapState} from 'vuex'
 export default {
   components: {
     TableEditModal,
+    TableChangeModal,
     BCardCode,
     BTableLite,
     vSelect,
@@ -138,12 +149,14 @@ export default {
       selectMode: 'single',
       customerCode:'',
       id:'',
+      item : {},
 
       selectOption: [
         'single', 'multiple',
       ],
       componentState: '',
       tableEditModal: false,
+      tableChangeModal: false,
     }
   },
   watch: {
@@ -164,6 +177,8 @@ export default {
           e.clickEvent = this.deleteButton
         } else if (e.event === 'save') {
           e.clickEvent = this.saveButton
+        } else if (e.event === 'edit') {
+          e.clickEvent = this.editButton
         }
       })
     }
@@ -205,15 +220,22 @@ export default {
       }
       this.$emit('delete-data',customerCode)
     },
+    editButton() {
+      console.log('수정버튼')
+      this.tableChangeModal = true
+      console.log(this.item)
+    },
     onRowSelected(val) {
       this.$emit('row-selected', val)
     },
     closeEditModal() {
       this.tableEditModal = false
+      this.tableChangeModal = false
     },
     inputModal(rowData) {
       const row = {}
       row.rowData = rowData
+      console.log(rowData)
       console.log("모달 rowData:::",row.rowData)
       row.gridType = this.gridType
       console.log("모달 gridType:::",row.gridType)
@@ -231,14 +253,17 @@ export default {
       this.tableEditModal = false
       this.ADD_CUSTOMER_CODE(rowData)
     },
+    editModal(){
+      this.tableChangeModal = false
+    },
     inputDataModal(){
-
     },
     itemCodeClick(item) {
       console.log("itemCodeClick 실행")
       console.log("itemList::::",item)
       console.log("item",item.id)
       this.id=item.id
+      this.item=item
 
       /*       const newObject = item.detailCode
 

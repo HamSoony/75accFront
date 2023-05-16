@@ -170,6 +170,7 @@ export default {
       let originValue = null
       let isTo = false
       this.tableRowData.map(e => {
+        console.log(e)
         const { key, value } = e
         data[key] = value
         if (e.To !== undefined) {
