@@ -11,6 +11,7 @@
         @input-modal="gridInputModal"
         @regist-data="registData"
         @delete-data="deleteData"
+        @edit-date="editData"
     />
   </div>
 </template>
@@ -54,6 +55,8 @@ export default {
     ...mapState({
       grid: state=>state.grid,
       customerList: state => state.account.base.customerList,
+      tableColumns: state => state.tableColumns,
+      detailTableColumns: state => state.detailTableColumns,
     })
   },
   data: ()=>({
@@ -75,6 +78,10 @@ export default {
       {
         value: '추가',
         event: 'add',
+      },
+      {
+        value: '수정',
+        event: 'edit',
       },
       {
         value: '삭제',
@@ -128,6 +135,11 @@ export default {
       // await this.$store.dispatch('account/base/GET_CUSTOMER_LIST',rowData[0].item)
     },
     async registData(){
+      console.log("폼에서 저장버튼")
+      console.log(this.selectData)
+      this.$store.dispatch('account/base/SAVE_CUSTOMER_CODE', this.selectData)
+    },
+    async editData(){
       console.log("폼에서 저장버튼")
       console.log(this.selectData)
       this.$store.dispatch('account/base/SAVE_CUSTOMER_CODE', this.selectData)

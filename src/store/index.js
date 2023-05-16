@@ -54,6 +54,7 @@ export default new Vuex.Store({
     SET_TABLE(state, tableColumns) {
       state.tableColumns = tableColumns[0].tableColumns
       state.detailTableColumns = tableColumns[0].detailTableColumns
+
     },
     RESET_GRID(state) {
       state.grid = []
