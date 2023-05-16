@@ -128,6 +128,7 @@ export default {
       const response = await fetchCostList(searchData)
       commit('SET_COST_LIST', response.data.costList)
       return response
+
     } catch (err) {
       throw new Error(err)
     }

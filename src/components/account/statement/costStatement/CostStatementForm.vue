@@ -27,66 +27,97 @@
     </div>
 
     <!-- table -->
-    <div>
-      <vue-good-table
-        ref="myTable"
-        :columns="columns"
-        :rows="costList"
-        :pagination-options="{
-          enabled: true,
-          perPage:pageLength
-        }"
-        theme="black-rhino"
-      >
-        <!-- pagination -->
-        <template
-          slot="pagination-bottom"
-          slot-scope="props"
-        >
-          <div class="d-flex justify-content-between flex-wrap">
-            <div class="d-flex align-items-center mb-0 mt-1">
-              <span class="text-nowrap">
-                Showing 1 to
-              </span>
-              <b-form-select
-                v-model="pageLength"
-                :options="['12','24','36']"
-                class="mx-1"
-                @input="(value)=>props.perPageChanged({currentPerPage:value})"
-              />
-              <span class="text-nowrap"> of {{ props.total }} entries </span>
-            </div>
-            <div>
-              <b-pagination
-                :value="1"
-                :total-rows="props.total"
-                :per-page="pageLength"
-                first-number
-                last-number
-                align="right"
-                prev-class="prev-item"
-                next-class="next-item"
-                class="mt-1 mb-0"
-                @input="(value)=>props.pageChanged({currentPage:value})"
-              >
-                <template #prev-text>
-                  <feather-icon
-                    icon="ChevronLeftIcon"
-                    size="18"
-                  />
-                </template>
-                <template #next-text>
-                  <feather-icon
-                    icon="ChevronRightIcon"
-                    size="18"
-                  />
-                </template>
-              </b-pagination>
-            </div>
-          </div>
-        </template>
-      </vue-good-table>
-    </div>
+
+    <b-table
+        :fields="fields"
+        :items="costList"
+    >
+
+      <template #thead-top="data">
+        <b-tr>
+          <b-th></b-th>
+          <b-th colspan="2" class="text-center">당&nbsp;&nbsp;&nbsp;&nbsp;기</b-th>
+          <b-th colspan="2" class="text-center">전&nbsp;&nbsp;&nbsp;&nbsp;기</b-th>
+        </b-tr>
+      </template>
+
+      <template v-slot:cell(cost)="data">
+        <div class="text-center">{{ data.value }}</div>
+      </template>
+      <template v-slot:cell(costSummary)="data">
+        <div class="text-center">{{ data.value | formatNumber }}</div>
+      </template>
+      <template v-slot:cell(earlyCost)="data">
+        <div class="text-center">{{ data.value }}</div>
+      </template>
+      <template v-slot:cell(earlyCostSummary)="data">
+        <div class="text-center">{{ data.value | formatNumber }}</div>
+      </template>
+
+    </b-table>
+
+
+<!--    <div>-->
+<!--      <vue-good-table-->
+<!--        ref="myTable"-->
+<!--        :columns="columns"-->
+<!--        :rows="costList"-->
+<!--        :pagination-options="{-->
+<!--          enabled: true,-->
+<!--          perPage:pageLength-->
+<!--        }"-->
+<!--        theme="black-rhino"-->
+<!--      >-->
+<!--        &lt;!&ndash; pagination &ndash;&gt;-->
+<!--        <template-->
+<!--          slot="pagination-bottom"-->
+<!--          slot-scope="props"-->
+<!--        >-->
+<!--          <div class="d-flex justify-content-between flex-wrap">-->
+<!--            <div class="d-flex align-items-center mb-0 mt-1">-->
+<!--              <span class="text-nowrap">-->
+<!--                Showing 1 to-->
+<!--              </span>-->
+<!--              <b-form-select-->
+<!--                v-model="pageLength"-->
+<!--                :options="['12','24','36']"-->
+<!--                class="mx-1"-->
+<!--                @input="(value)=>props.perPageChanged({currentPerPage:value})"-->
+<!--              />-->
+<!--              <span class="text-nowrap"> of {{ props.total }} entries </span>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <b-pagination-->
+<!--                :value="1"-->
+<!--                :total-rows="props.total"-->
+<!--                :per-page="pageLength"-->
+<!--                first-number-->
+<!--                last-number-->
+<!--                align="right"-->
+<!--                prev-class="prev-item"-->
+<!--                next-class="next-item"-->
+<!--                class="mt-1 mb-0"-->
+<!--                @input="(value)=>props.pageChanged({currentPage:value})"-->
+<!--              >-->
+<!--                <template #prev-text>-->
+<!--                  <feather-icon-->
+<!--                    icon="ChevronLeftIcon"-->
+<!--                    size="18"-->
+<!--                  />-->
+<!--                </template>-->
+<!--                <template #next-text>-->
+<!--                  <feather-icon-->
+<!--                    icon="ChevronRightIcon"-->
+<!--                    size="18"-->
+<!--                  />-->
+<!--                </template>-->
+<!--              </b-pagination>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </template>-->
+<!--      </vue-good-table>-->
+<!--    </div>-->
+
   </div>
 </template>
 
@@ -124,6 +155,15 @@ export default {
   data() {
     return {
       pageLength: 12,
+
+      fields:[
+        {key: 'accountName', label: '과목'},
+        {key: 'cost', label: '세부금액', thClass: "text-center"},
+        {key: 'costSummary', label: '합계금액', thClass: "text-center",},
+        {key: 'earlyCost', label: '세부금액', thClass: "text-center"},
+        {key: 'earlyCostSummary', label: '합계금액', thClass: "text-center"},
+      ],
+
       columns: [
         {
           label: '과목',
@@ -132,6 +172,7 @@ export default {
         {
           label: '당기',
           field: '1',
+
         },
         {
           label: '세부금액',
@@ -196,7 +237,16 @@ export default {
 
   },
 }
+// 숫자 천단위구분 콤마
+  Vue.filter('formatNumber', function(value) {
+    if (value == null) {
+      return '';
+    }
+    return Number(value).toLocaleString();
+  });
+
 </script>
+
 <style lang="css">
 
 </style>
