@@ -7,6 +7,7 @@ export default {
   },
 // 자산 리스트
   SET_CURRENT_ASSET_LIST(state,findCurrentAssetList) {
+    findCurrentAssetList.showDetails = false
     state.findCurrentAssetList = findCurrentAssetList
   },
   //자산 조회(코드)
