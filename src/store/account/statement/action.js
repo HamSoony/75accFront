@@ -81,9 +81,10 @@ export default {
      */
   async FETCH_FINANCIAL_POSITION_LIST({ commit }, searchData) {
     try {
+      console.log("Action 재무상태표 날자" +searchData )
       const response = await fetchFinancialPositionList(searchData)
       console.log(response)
-      commit('SET_FINANCIAL_POSITION_LIST', response.data.financialPositionList)
+      commit('SET_FINANCIAL_POSITION_LIST', response.data.financialPositions)
       return response
     } catch (err) {
       throw new Error(err)

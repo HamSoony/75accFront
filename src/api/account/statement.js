@@ -64,6 +64,7 @@ function fetchIncomeList(searchDate) {
  * @returns {*}
  */
 function fetchFinancialPositionList(searchDate) {
+  console.log("재무상태표 api"+searchDate);
   return accountApi.get(`${FINANCIAL_POSITION_URL}`, {
     params: {
       searchDate,
