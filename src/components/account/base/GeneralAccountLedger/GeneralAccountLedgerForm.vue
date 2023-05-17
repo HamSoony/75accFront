@@ -96,19 +96,7 @@
         </template>
       </vue-good-table>
     </div>
-    <!-- 계정코드 , 계정명 전용 모달-->
-    <b-modal
-      id="accountCode"
-      ref="accountModal"
-      title="계정코드 찾기"
-    >
-      <p class="my-5">
-        <AccountCodeModal
-          v-model:value="accountCode"
-          condition="accountCode"
-        />
-      </p>
-    </b-modal>
+
 
   </div>
 </template>
@@ -123,11 +111,9 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 import { mapActions, mapMutations, mapState } from 'vuex'
 import Vue from 'vue'
 // eslint-disable-next-line import/extensions
-import AccountCodeModal from '../../modal/AccountCodeModal'
 
 export default {
   components: {
-    AccountCodeModal,
     BButton,
     // eslint-disable-next-line vue/no-unused-components
     BAvatar,
@@ -154,7 +140,7 @@ export default {
         },
         {
           label: '계정명',
-          field: 'accountName',
+          field: 'acctName',
         },
         {
           label: '차변금액',
@@ -166,7 +152,7 @@ export default {
         },
         {
           label: '거래처',
-          field: 'customerName',
+          field: 'cterName',
         },
 
         {
@@ -200,13 +186,7 @@ export default {
 
     ...mapActions('account/base', ['FETCH_GENERAL_ACCOUNT_LEDGER']),
     ...mapMutations('account/base', ['CLEAR_GENERAL_ACCOUNT_LEDGER']),
-    /**
-     * 계정과목 모달 띄우기
-     */
-    searchAccountCode() {
-      this.$root.$emit('bv::show::modal', 'accountCode', '#focusThisOnClose')
-      console.log("믄데")
-    },
+
 
     /**
      * 날짜에 따른 분개징조회

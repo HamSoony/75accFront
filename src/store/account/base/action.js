@@ -24,7 +24,8 @@ export default {
   async FETCH_ACCOUNT_CODE_LIST({ commit }) {
     try {
       const { data } = await fetchAccountCodeList()
-      commit('SET_ACCOUNT_CODE_LIST', data.accountCodeList)
+      console.log(data)
+      commit('SET_ACCOUNT_CODE_LIST', data.accountList)
       return data
     } catch (err) {
       throw new Error(err)
@@ -44,7 +45,7 @@ export default {
   async FETCH_CURRENT_ASSET_LIST({ commit }) {
     try {
       const { data } = await fetchCurrentAssetList()
-      commit('SET_CURRENT_ASSET_LIST', data.list)
+      commit('SET_CURRENT_ASSET_LIST', data)
       console.log(data)
     } catch (err) {
       throw new Error(err)
@@ -173,14 +174,12 @@ export default {
     }
   },
 
-
   async DELETE_CUSTOMER_CODE({commit}, id){
     try {
       console.log('커스터머코드',id)
        await deleteCustomerCode(id)
       commit('DELETE_CUSTOMER_CODE',id)
       return null
-
     } catch (err){
       throw new Error(err)
     }
