@@ -36,7 +36,7 @@
           enabled: true,
           perPage:pageLength
         }"
-        theme="black-rhino"
+        theme="white"
       >
         <!-- pagination -->
         <template
