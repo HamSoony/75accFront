@@ -62,12 +62,18 @@ function editSlip(slip) {
 
 /**
  * 전표승인
- * @param slip
- * @returns {*}
  */
-function approvalSlip(slip) {
-  return accountApi.put(`${SLIP_URL}/${slip.slipNo}`, slip)
+function approvalSlip(slipIdList) {
+  return accountApi.put(`/account/slipsApprove`, slipIdList)
 }
+
+/**
+ * 전표반려
+ */
+function rejectSlip(slipIdList) {
+  return accountApi.put(`/account/slipsReject`, slipIdList)
+}
+
 
 /**
  * 분개장검색
@@ -82,7 +88,14 @@ function selectJournals({ startDate, endDate }) {
   })
 }
 
+/**
+ * 승인 대기중인 전표 조회
+ */
+function watingApproveSlips() {
+  return accountApi.get(`/account/slipsApprove`)
+}
+
 export {
   selectSlips, selectSlip, deleteSlip, registerSlip, editSlip, approvalSlip,
-  selectJournals,
+  selectJournals, watingApproveSlips, rejectSlip
 }

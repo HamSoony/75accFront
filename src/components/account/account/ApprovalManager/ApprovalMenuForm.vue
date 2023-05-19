@@ -12,7 +12,7 @@
         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
         variant="primary"
         style=" float: right"
-        @click="$emit('rejectSlip')"
+        @click="$emit('rejectSlips')"
       >전표반려
       </b-button>
     </b-button-group>
