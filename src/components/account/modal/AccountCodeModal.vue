@@ -50,13 +50,13 @@ export default {
       searchAccountCode: '',
       searchAccountName: '',
       fields: ['acctInnerCode', 'acctName'],
-      value: {}
+      value: {},
+      assetList: ['assetList'],
     }
   },
 
   computed: {
     ...mapState('account/base', ['accountList']),
-
   },
   created() {
     this.FETCH_ACCOUNT_CODE_LIST();
@@ -82,6 +82,7 @@ export default {
           accountName: this.searchAccountCode,
         }
         this.FETCH_ACCOUNT_CODE(searchCode)
+
     },
     // 선택된 로우
     onRowSelected(selectedItem) {
@@ -95,6 +96,7 @@ export default {
       const { acctInnerCode,acctName } = selectedItem[0]
       this.value = { acctInnerCode,acctName }
       this.$emit('input', this.value.acctInnerCode)
+
     },
 
   },

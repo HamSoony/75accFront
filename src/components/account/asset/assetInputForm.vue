@@ -1,4 +1,5 @@
 <template>
+  <div>
   <b-col class="form">
     <div class="important">주요등록사항</div>
 
@@ -62,17 +63,29 @@
         <option value="departments" v-for="dpt in dpts" :key="dpt">{{dpt}}</option>
       </select>
     </div>
+
+
   </b-col>
 
+  </div>
 </template>
 
 <script>
+
 export default {
-  name: "assetInputForm"
+  name: "assetInputForm",
+
+  data() {
+     return {
+        showModal: false,
+      }
+    },
+
 }
 </script>
 
 <style scoped>
+
 .form {
   border-radius: 8px;
   margin-top: 20px;

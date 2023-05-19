@@ -11,7 +11,7 @@ import {
   fetchAssetCodeList,
   fetchCurrentAssetList,
   fetchFindAssetByCodeList,
-  fetchFindAssetByNameList,
+  fetchFindAssetName,
 } from '@/api/account/base'
 
 export default {
@@ -31,16 +31,16 @@ export default {
       throw new Error(err)
     }
   },
-  async FETCH_ASSET_CODE_LIST({ commit }) {
-    try {
-      const { data } = await fetchAssetCodeList()
-      commit('SET_ASSET_CODE_LIST', data.accountCodeList)
-      console.log( "Test : " + data)
-      return data
-    } catch (err) {
-      throw new Error(err)
-    }
-  },
+  // async FETCH_ASSET_CODE_LIST({ commit }) {
+  //   try {
+  //     const { data } = await fetchAssetCodeList()
+  //     commit('SET_ASSET_CODE_LIST', data.accountCodeList)
+  //     console.log( "Test : " + data)
+  //     return data
+  //   } catch (err) {
+  //     throw new Error(err)
+  //   }
+  // },
 
   async FETCH_CURRENT_ASSET_LIST({ commit }) {
     try {
@@ -52,20 +52,12 @@ export default {
     }
   },
 
-  async FETCH_FIND_ASSET_BY_CODE_LIST({ commit }, acctCode) {
+  async FETCH_FIND_ASSET_NAME({ commit }, assetName) {
     try {
-      const { data } = await fetchFindAssetByCodeList(acctCode)
-      commit('SET_FIND_ASSET_BY_CODE_LIST', data)
+      console.log(assetName)
+      const {data} = await fetchFindAssetName(assetName)
       console.log(data)
-    } catch (err) {
-      throw new Error(err)
-    }
-  },
-  async FETCH_FIND_ASSET_BY_NAME_LIST({ commit }, acctName) {
-    try {
-      const { data } = await fetchFindAssetByNameList(acctName)
-      commit('SET_FIND_ASSET_BY_NAME_LIST', data)
-      console.log(data)
+      commit('SET_FIND_ASSET_NAME', data)
     } catch (err) {
       throw new Error(err)
     }
