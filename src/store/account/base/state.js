@@ -14,6 +14,7 @@ export default {
     id:'',
 
     assetCodeList: [],
+    findAssetName: [],
     findCurrentAssetList:[],
     findAssetByCodeList:[],
     findAssetByNameList:[],
@@ -72,14 +73,14 @@ export default {
       return findCurrentAssetList
     },
 
-    GET_FIND_ASSET_BY_CODE_LIST({commit}, acctCode) {
-      const findAssetByCodeList = Promise.resolve(acctCode);
-      return findAssetByCodeList;
-    },
-
-    GET_FIND_ASSET_BY_NAME_LIST({commit}, acctName) {
-      const findAssetByNameList = Promise.resolve(acctName);
-      return findAssetByNameList;
+    // GET_FIND_ASSET_BY_CODE_LIST({commit}, acctCode) {
+    //   const findAssetByCodeList = Promise.resolve(acctCode);
+    //   return findAssetByCodeList;
+    // },
+    //
+    GET_FIND_ASSET_NAME(state) {
+      const findAssetName =state.findAssetName;
+      return findAssetName;
     },
 
 
