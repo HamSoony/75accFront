@@ -124,7 +124,7 @@ export default {
   async SEARCH_JOURNAL({commit}, date = {}) {
     try {
       const response = await selectJournals(date)
-      commit('SET_JOURNAL_LIST', response.data)
+      commit('SET_JOURNAL_LIST', response.data.journal)
       return response
     } catch (err) {
       throw new Error(err)
