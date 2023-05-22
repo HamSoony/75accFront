@@ -80,7 +80,7 @@ function rejectSlip(slipIdList) {
  * @param date 1
  */
 function selectJournals({ startDate, endDate }) {
-  return accountApi.get(`${JOURNAL_URL}`, {
+  return accountApi.get(`/account/journalsBetweenDate`, {
     params: {
       startDate,
       endDate,

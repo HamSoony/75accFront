@@ -9,7 +9,7 @@
         variant="primary"
         :disabled="addBtStatus"
       >
-        전표추가 u
+        전표추가
       </b-button>
       <b-button
         v-if="activeButton==='addSlip'"
@@ -34,7 +34,7 @@
         variant="primary"
         @click="changeAddFormPage"
       >
-        전표추가0
+        전표추가
       </b-button>
       <b-button
         v-if="activeButton==='searchSlip'"
