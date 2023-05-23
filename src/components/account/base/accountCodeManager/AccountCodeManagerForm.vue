@@ -1,13 +1,39 @@
 <template>
-  <div style="font-family: 'Franklin Gothic Demi'">
+  <div style="font-family: '배달의민족 도현">
 
     <div>
-      <b-form-select
-          v-model="selected"
-          :options="GET_ACCOUNT_LEDER_TREE_LIST"
-          style="width: 200px "
-          @change="selectedCode"
-      />
+      <b-row >
+          <b-col>
+            <b-form-select
+                v-model="selectedAcctName"
+                :options="GET_ACCOUNT_LEDER_TREE_LIST"
+                style="width: 200px "
+                @change="selectedCode"
+            >
+            </b-form-select>
+          </b-col>
+
+        <b-col class="pb-2" >
+          <b-button-group style="float: right">
+          <b-button
+              variant="primary"
+              @click="addAccountCode" >
+            추가
+          </b-button>
+          <b-button
+              variant="primary"
+              @click="updateModal">
+            수정
+          </b-button>
+          <b-button
+              variant="primary"
+              @click="removeAccountCode">
+            삭제
+          </b-button>
+          </b-button-group>
+        </b-col>
+
+      </b-row>
     </div>
 
     <div>
@@ -15,18 +41,23 @@
           ref="myTable"
           :columns="columns"
           :rows="filterAccountCodeList"
-          theme="black-rhino"
+          :fixed-header="true"
+          max-height="600px"
           :select-options="{ enabled: true }"
-      >
-        <div slot="table-actions">
-          <button @click="addAccountCode">
-            추가
-          </button>
-          <button @click="removeAccountCode">
-            삭제
-          </button>
 
-        </div>
+      >
+<!--        <div slot="table-actions">-->
+<!--          <button @click="addAccountCode">-->
+<!--            추가-->
+<!--          </button>-->
+<!--          <button @click="updateModal">-->
+<!--            수정-->
+<!--          </button>-->
+<!--          <button @click="removeAccountCode">-->
+<!--            삭제-->
+<!--          </button>-->
+
+<!--        </div>-->
       </vue-good-table>
       <div />
       <div />
@@ -37,26 +68,48 @@
         title="계정코드추가"
         @ok="addNewAccountCode"
     >
-
-      <label for="input-small">계정과목명:</label>
-
+    <div >
+      <label for="input-small">계정과목명</label>
       <b-form-input
           id="input-small"
-          v-model="newAccountName"
-          size="sm"
+          v-model="newAcctName"
+          size="default"
           placeholder="계정과목명"
       />
 
-      <label for="input-small">성격:</label>
-
+      <label for="input-small" class="mt-1">성격</label>
       <b-form-input
           id="input-small"
-          v-model="newAccountCharacter"
-          size="sm"
+          v-model="newAcctCharacter"
+          size="default"
           placeholder="성격"
+      />
+    </div>
+    </b-modal>
+
+    <b-modal
+        id="AccountUpdate"
+        ref=""
+        title="계정과목수정"
+        @ok="updateAccountCode"
+    >
+
+      <label for="input-small">계정과목명</label>
+      <b-form-input
+          id="input-small"
+          v-model="newAcctName"
+          size="default"
+      />
+
+      <label for="input-small" class="mt-1">성격</label>
+      <b-form-input
+          id="input-small"
+          v-model="newAcctCharacter"
+          size="default"
       />
 
     </b-modal>
+
   </div>
 </template>
 
@@ -90,27 +143,32 @@ export default {
   data() {
     return {
       pageLength: 10,
+
       columns: [
 
         {
           label: '계정과목코드',
-          field: 'accountInnerCode',
+          field: 'acctInnerCode',
         },
         {
           label: '계정과목명',
-          field: 'accountName',
+          field: 'acctName',
         },
         {
           label: '성격',
-          field: 'accountCharacter',
+          field: 'acctCharacter',
         },
 
       ],
-      selected: null,
+      selectedAcctName: null,
       filterAccountCodeList: [],
-      accountInnerCode: '',
-      newAccountName: '',
-      newAccountCharacter: '',
+      acctInnerCode: '',
+      parentAcctInnerCode:'',
+      groupCode:'',
+      newAcctName: '',
+      newAcctCharacter: '',
+      selectMode: 'single',
+
 
     }
   },
@@ -118,7 +176,7 @@ export default {
     /**
      * 이렇게 변수에 할당해서 사용한다면 위의 data에 선언필요 x
      */
-    ...mapState('account/base', ['accountCodeList']),
+    ...mapState('account/base', [ 'accountSubjectList']),
     ...mapGetters('account/base', ['GET_ACCOUNT_LEDER_TREE_LIST']),
 
   },
@@ -126,11 +184,12 @@ export default {
    * 컴포넌트가 사라질때 호출되는 훅
    */
   created() {
-    this.FETCH_ACCOUNT_CODE_LIST()
+    this.FETCH_ACCOUNT_SUBJECT_LIST()
   },
 
   methods: {
-    ...mapActions('account/base', ['FETCH_ACCOUNT_CODE_LIST', 'DELETE_ACCOUNT_CODE', 'ADD_ACCOUNT_CODE']),
+    ...mapActions('account/base', ['FETCH_ACCOUNT_SUBJECT_LIST',
+      'DELETE_ACCOUNT_CODE', 'ADD_ACCOUNT_CODE', 'UPDATE_ACCOUNT_CODE']),
 
     /**
      *
@@ -140,11 +199,14 @@ export default {
      */
     selectedCode(value) {
       if (!value) {
-        alert('저를 선택하시면 안됩니다')
+        alert('선택된값이 없습니다.')
         return
       }
-      const [firstNo, lastNo] = value.accountInnerCode.split('-')
-      this.filterAccountCodeList = this.accountCodeList.filter(v => v.accountInnerCode >= firstNo && v.accountInnerCode <= lastNo)
+      // console.log(value)
+      const [firstNo, lastNo] = value.acctInnerCode.split('-')
+
+      this.filterAccountCodeList = this.accountSubjectList.filter(v => v.acctInnerCode >= firstNo && v.acctInnerCode <= lastNo)
+
       console.log(this.filterAccountCodeList)
     },
     /**
@@ -158,6 +220,16 @@ export default {
       this.$root.$emit('bv::show::modal', 'AccountControllCode', '#focusThisOnClose')
       console.log('추가')
     },
+
+    updateModal(){
+      const selectCodeName = this.$refs.myTable.selectedRows.map(v => v.acctName)
+      const selectCodeCharacter = this.$refs.myTable.selectedRows.map(v => v.acctCharacter)
+      this.newAcctName = selectCodeName[0]
+      this.newAcctCharacter = selectCodeCharacter[0]
+      this.$root.$emit('bv::show::modal', 'AccountUpdate', '#focusThisOnClose')
+    },
+
+
     // newCode 맨 앞의 숫자가 0이면 공백으로 처리하기 때문에 0을 살려주는 함수
     numberPad(str, width) {
       // eslint-disable-next-line no-param-reassign
@@ -170,31 +242,32 @@ export default {
      * 모달창 ok 눌렀을때  , slice는 원본배열을 가만히 나둠
      */
     async addNewAccountCode() {
-      if (this.newAccountName === '' && this.newAccountCharacter === '') {
+      if (this.newAcctName === '' && this.newAcctCharacter === '') {
         alert('모든 항목을 입력하세요')
         return
       }
       const {
-        accountInnerCode, parentAccountInnerCode, accountDivision,
+        acctInnerCode, parentAcctInnerCode, acctDivision, groupCode
       } = this.filterAccountCodeList.slice(-1)[0]
 
       const newData = {
-        accountInnerCode: this.numberPad(Number(accountInnerCode) + 1, 4),
-        parentAccountInnercode: parentAccountInnerCode,
-        accountCode: this.numberPad(Number(accountInnerCode) + 1, 4),
-        accountName: this.newAccountName,
-        accountCharacter: this.newAccountCharacter,
-        accountDivision,
+        acctInnerCode: this.numberPad(Number(acctInnerCode) + 1, 4),
+        parentAcctInnerCode: parentAcctInnerCode,
+        acctCode: this.numberPad(Number(acctInnerCode) + 1, 4),
+        acctName: this.newAcctName,
+        acctCharacter: this.newAcctCharacter,
+        acctDivision, groupCode,
       }
       const response = await this.ADD_ACCOUNT_CODE(newData)
       if (response.status === 200) {
-        alert(response.data.errorMsg)
+        // alert(response.data.errorMsg)
+        alert("등록되었습니다")
         this.filterAccountCodeList.push(newData)
       } else {
         alert('등록에 실패하셨습니다')
       }
-      this.newAccountName = ''
-      this.newAccountCharacter = ''
+      this.newAcctName = ''
+      this.newAcctCharacter = ''
     },
     /**
      * 삭제
@@ -209,11 +282,43 @@ export default {
       if (!confirm('정말로 삭제하시겠습니까?')) {
         return
       }
-      const deleteCodeList = this.$refs.myTable.selectedRows.map(v => v.accountInnerCode)
+      const deleteCodeList = this.$refs.myTable.selectedRows.map(v => v.acctInnerCode)
       const updateList = await this.DELETE_ACCOUNT_CODE(deleteCodeList)
-      alert(`계정과목코드 ${updateList.join(',')} 삭제되었습니다`)
-      this.filterAccountCodeList = []
+      alert(`계정과목코드 ${deleteCodeList.join(',')} 삭제되었습니다`)
+
+      this.filterAccountCodeList=this.filterAccountCodeList.filter(item => !deleteCodeList.includes(item.acctInnerCode));
+
     },
+
+    //계정과목수정
+    async updateAccountCode(){
+
+      const {
+        acctInnerCode, parentAcctInnerCode, acctCode, acctDivision,
+      } = this.filterAccountCodeList.slice(-1)[0]
+
+      const updateData = {
+        acctInnerCode: acctInnerCode,
+        parentAcctInnerCode: parentAcctInnerCode,
+        acctCode: acctCode,
+        acctName: this.newAcctName,
+        acctCharacter: this.newAcctCharacter,
+        acctDivision: acctDivision
+      }
+      const response = await this.UPDATE_ACCOUNT_CODE(updateData)
+      if (response.status === 200) {
+        alert("수정되었습니다")
+        //this.filterAccountCodeList.push(updateData)
+        const lastIndex = this.filterAccountCodeList.length - 1;
+        this.$set(this.filterAccountCodeList, lastIndex, updateData);
+
+      } else {
+        alert('다시 입력해주세요')
+      }
+      this.newAcctName = ''
+      this.newAcctCharacter = ''
+
+    }
 
   },
 }

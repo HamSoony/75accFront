@@ -37,6 +37,15 @@ export default {
     state.accountList = accountList
   },
 
+  /**
+   * 계정과목관리
+   */
+  SET_ACCOUNT_SUBJECT_LIST(state, accountSubjectList) {
+    console.log(accountSubjectList)
+    state.accountSubjectList=accountSubjectList
+
+  },
+
   // 계정코드 셋팅
   SET_ACCOUNTCODE_LIST(state, accountCodeList) {
     state.accountCodeList = accountCodeList

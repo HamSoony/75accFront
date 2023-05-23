@@ -6,12 +6,14 @@ import {
   fetchGeneralAccountLedger,
   fetchAccountCodeList,
   deleteAccountCode,
-  addAccountCode, searchCustomerInfoList, deleteCustomerCode,
+  addAccountCode,
+  searchCustomerInfoList, deleteCustomerCode,
   saveCustomer,
   fetchAssetCodeList,
   fetchCurrentAssetList,
   fetchFindAssetByCodeList,
-  fetchFindAssetName,
+  fetchFindAssetByNameList,
+  fetchAccountSubjectList,
 } from '@/api/account/base'
 
 export default {
@@ -25,22 +27,34 @@ export default {
     try {
       const { data } = await fetchAccountCodeList()
       console.log(data)
+      console.log(data.accountList)
       commit('SET_ACCOUNT_CODE_LIST', data.accountList)
       return data
     } catch (err) {
       throw new Error(err)
     }
   },
-  // async FETCH_ASSET_CODE_LIST({ commit }) {
-  //   try {
-  //     const { data } = await fetchAssetCodeList()
-  //     commit('SET_ASSET_CODE_LIST', data.accountCodeList)
-  //     console.log( "Test : " + data)
-  //     return data
-  //   } catch (err) {
-  //     throw new Error(err)
-  //   }
-  // },
+  async FETCH_ACCOUNT_SUBJECT_LIST({ commit }) {
+    try {
+      const { data } = await fetchAccountSubjectList()
+      // console.log(data.accountCodeList)
+      commit('SET_ACCOUNT_SUBJECT_LIST', data.accountCodeList)
+      return data
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  async FETCH_ASSET_CODE_LIST({ commit }) {
+    try {
+      const { data } = await fetchAssetCodeList()
+      commit('SET_ASSET_CODE_LIST', data.accountCodeList)
+      console.log( "Test : " + data)
+      return data
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
 
   async FETCH_CURRENT_ASSET_LIST({ commit }) {
     try {
@@ -75,7 +89,7 @@ export default {
       const updateList = []
       await deleteCodeList.reduce((pre, code) => pre.then(async () => {
             const response = await deleteAccountCode(code)
-            updateList.push(response.data.updateCodeNo)
+            updateList.push(response.data)
           }),
           Promise.resolve())
 
@@ -87,6 +101,16 @@ export default {
   // 해당 계정추가
   async ADD_ACCOUNT_CODE(_, accountCode) {
     try {
+      console.log('계정추가확인',accountCode)
+      return await addAccountCode(accountCode)
+    } catch (err) {
+      return err
+    }
+  },
+
+  async UPDATE_ACCOUNT_CODE(_, accountCode) {
+    try {
+      console.log('계정과목수정',accountCode)
       return await addAccountCode(accountCode)
     } catch (err) {
       return err

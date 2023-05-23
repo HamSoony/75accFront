@@ -5,6 +5,7 @@ export default {
   namespaced: true,
   state: {
     accountCodeList: [],
+    accountSubjectList:[],
     accountList: [],
     accountCustomerList: [],
     accountControllCodeList: [],
@@ -48,7 +49,8 @@ export default {
      * @constructor
      */
     GET_ACCOUNT_LEDER_TREE_LIST(state) {
-      const rootList = state.accountCodeList.filter(value => value.leaf === '0').map(v => ({ value: v, text: v.accountName }))
+      // console.log('루트', state.accountCodeList2)
+      const rootList = state.accountSubjectList.filter(value => value.leaf === '0').map(v => ({ value: v, text: v.acctName }))
       rootList.shift()
       rootList.unshift({ value: null, text: '계정과목을 선택해주세요' })
       return rootList

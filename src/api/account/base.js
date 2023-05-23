@@ -70,12 +70,22 @@ function fetchAccountCodeList() {
     return accountApi.get(`${ACCOUNT_CODE_URL}/accountList`)
 }
 
+
+/**
+ * 계정과목관리
+ */
+function fetchAccountSubjectList() {
+    return accountApi.get(`${ACCOUNT_CODE_URL}/accountCodes`)
+}
+
+
 /**
  * 계정코드삭제
  * @param accountCode
  * @returns {*}
  */
 function deleteAccountCode(accountInnerCode) {
+    console.log(accountInnerCode)
     return accountApi.delete(`${ACCOUNT_CODE_URL}/${accountInnerCode}`)
 }
 
@@ -85,8 +95,9 @@ function deleteAccountCode(accountInnerCode) {
  * @returns {*}
  */
 function addAccountCode(accountCode) {
-    return accountApi.post(`${ACCOUNT_CODE_URL}`, accountCode)
+    return accountApi.post(`${ACCOUNT_CODE_URL}/accountCodes`, accountCode)
 }
+
 
 /**
  * 계정별원장
@@ -174,5 +185,6 @@ export {
     fetchAssetCodeList,
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,
-    fetchFindAssetName,
+    fetchFindAssetByNameList,
+    fetchAccountSubjectList
 }
