@@ -48,6 +48,8 @@
           perPage:pageLength
         }"
         :rows="cashJournalList"
+        :fixed-header="true"
+        max-height="600px"
         theme="black-rhino"
       >
         <!-- pagination -->
