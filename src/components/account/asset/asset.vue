@@ -108,12 +108,14 @@
               <b-col>{{ row.item.assetCode.raccumulatedAmortization }}</b-col>
             </b-row>
             <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>누적상환비용 :</b></b-col>
-              <b-col>{{ row.item.assetCode.accumulatedAmortization }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>기말장부가치 :</b></b-col>
-              <b-col>{{ row.item.assetCode.bookValueend }}</b-col>
+              <b-col sm="2" class="text-sm-right"></b-col>
+              <b-col sm="6">
+                <b-form-input></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-right"><b>기말장부가치 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="row.item.assetCode.bookValueend" disabled></b-form-input>
+              </b-col>
             </b-row>
             <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
           </b-card>

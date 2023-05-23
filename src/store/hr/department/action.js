@@ -5,7 +5,7 @@ export default {
     try {
       const res = await getDepartmentList(searchOption)
       const departmentList = res.data.departments
-      console.log(res)
+      //console.log(res)
       commit('setDepartmentList', departmentList)
 
       // return res

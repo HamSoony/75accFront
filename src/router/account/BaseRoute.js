@@ -1,6 +1,7 @@
 import AccountRoute from './AccountRoute'
 import StatementRoute from './StatementRoute'
 import assetRoute from './assetRoute'
+import BudgetRoute from './BudgetRoute'
 
 const ERP = '/account'
 const accountRouter = [
@@ -76,6 +77,7 @@ const accountRouter = [
   },
   ...AccountRoute,
   ...StatementRoute,
-    ...assetRoute
+  ...assetRoute,
+  ...BudgetRoute
 ]
 export default accountRouter

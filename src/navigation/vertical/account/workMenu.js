@@ -115,6 +115,18 @@ export default [
       },
     ],
   },
+  {
+    title: '예산관리',
+    route: { name: 'budgetHome' },
+    icon: 'MonitorIcon',
+    children: [
+      {
+        title: '예산신청입력',
+        route: { name: 'BudgetApplicationPage' },
+        icon: 'FileIcon',
+      },
+    ],
+  },
 
   {
     title: '기초정보관리',

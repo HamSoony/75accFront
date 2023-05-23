@@ -216,6 +216,7 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
       }
+      console.log(searchData)
       const response = await this.FETCH_DETAIL_TRIAL_BALANCE_LIST(searchData)
       if (response.status === 204) {
         Vue.$toast.info('검색결과가 존재하지 않습니다')
