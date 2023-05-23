@@ -32,7 +32,7 @@ function fetchFindAssetByCodeList(acctCode) {
  * @param
  * @returns {*}
  */
-function fetchFindAssetName(assetName) {
+function fetchFindAssetByNameList(assetName) {
     console.log(assetName)
     const data = accountApi.get("/currentAsset/findAssetName", {
         params:
