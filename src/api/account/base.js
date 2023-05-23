@@ -6,7 +6,7 @@ const CUSTOMER_URL = '/customer'
 const CURRENT_ASSET_LIST_URL = '/currentAsset/assetList'
 const CURRENT_ASSET_CODE_LIST_URL = '/account/account/accountList'
 const FIND_CURRENT_ASSET_BY_CODE_LIST = '/currentAsset/findAssetByCodeList'
-const FIND_CURRENT_ASSET_BY_NAME_LIST = '/currentAsset/findAssetByNameList'
+const FIND_CURRENT_ASSET_NAME = '/currentAsset/findAssetName'
 
 
 /**
@@ -24,16 +24,22 @@ function fetchCurrentAssetList() {
  * @returns {*}
  */
 function fetchFindAssetByCodeList(acctCode) {
-    return accountApi.get(`/acc/currentAsset/findAssetByCodeList`, acctCode)
+    return accountApi.get(`/currentAsset/findAssetByCodeList`, acctCode)
 }
 
 /**
- * 자산 조건(acctName) 조회
+ * 자산 조건(assetName) 조회
  * @param
  * @returns {*}
  */
-function fetchFindAssetByNameList(acctName) {
-    return accountApi.get(`/acc/currentAsset/findAssetByNameList`, acctName)
+function fetchFindAssetName(assetName) {
+    console.log(assetName)
+    const data = accountApi.get("/currentAsset/findAssetName", {
+        params:
+            assetName,
+    })
+    console.log(data)
+    return data
 }
 
 /**
@@ -165,9 +171,17 @@ function saveCustomer(newCustomer){
 }
 
 export {
-    fetchAccountCode, fetchAccountCustomerCode, fetchAccountControllCode, fetchAccountLedger, fetchGeneralAccountLedger, fetchAccountCodeList,
-    deleteAccountCode, addAccountCode,
-    searchCustomerInfoList, deleteCustomerCode,saveCustomer,
+    fetchAccountCode,
+    fetchAccountCustomerCode,
+    fetchAccountControllCode,
+    fetchAccountLedger,
+    fetchGeneralAccountLedger,
+    fetchAccountCodeList,
+    deleteAccountCode,
+    addAccountCode,
+    searchCustomerInfoList,
+    deleteCustomerCode,
+    saveCustomer,
     fetchAssetCodeList,
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,

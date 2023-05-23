@@ -31,7 +31,7 @@
       <vue-good-table
         ref="myTable"
         :columns="columns"
-        :rows="financialPositionList"
+        :rows="financialPositions"
         :pagination-options="{
           enabled: true,
           perPage:pageLength
@@ -139,7 +139,7 @@ export default {
         },
         {
           label: '과목',
-          field: 'accountName',
+          field: 'acctName',
         },
         {
           label: '세부금액',
@@ -165,7 +165,7 @@ export default {
     /**
      * 이렇게 변수에 할당해서 사용한다면 위의 data에 선언필요 x
      */
-    ...mapState('account/statement', ['financialPositionList']),
+    ...mapState('account/statement', ['financialPositions']),
 
   },
   /**
@@ -184,7 +184,9 @@ export default {
      * 204 상태를 서버에서 보내준다 ( NO-CONTNET) 검색시 아무것도 발견하지 못했을때
      * 유효성체크
      */
+
     async searchFinancialPositionList() {
+      console.log("재무상태표"+this.selectedDate);
       if (this.selectedDate === '') {
         Vue.$toast.info('검색일자를 정해주세요~')
         return
@@ -197,7 +199,9 @@ export default {
 
   },
 }
+
 </script>
+
 <style lang="css">
 
 </style>

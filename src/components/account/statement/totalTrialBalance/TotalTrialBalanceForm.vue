@@ -36,7 +36,7 @@
           enabled: true,
           perPage:pageLength
         }"
-        theme="black-rhino"
+        theme="white"
       >
         <!-- pagination -->
         <template
@@ -45,16 +45,16 @@
         >
           <div class="d-flex justify-content-between flex-wrap">
             <div class="d-flex align-items-center mb-0 mt-1">
-              <span class="text-nowrap">
-                Showing 1 to
-              </span>
-              <b-form-select
-                v-model="pageLength"
-                :options="['10','20','30']"
-                class="mx-1"
-                @input="(value)=>props.perPageChanged({currentPerPage:value})"
-              />
-              <span class="text-nowrap"> of {{ props.total }} entries </span>
+<!--              <span class="text-nowrap">-->
+<!--                Showing 1 to-->
+<!--              </span>-->
+<!--              <b-form-select-->
+<!--                v-model="pageLength"-->
+<!--                :options="['10','20','30']"-->
+<!--                class="mx-1"-->
+<!--                @input="(value)=>props.perPageChanged({currentPerPage:value})"-->
+<!--              />-->
+<!--              <span class="text-nowrap"> of {{ props.total }} entries </span>-->
             </div>
             <div>
               <b-pagination
@@ -123,7 +123,7 @@ export default {
 
   data() {
     return {
-      pageLength: 10,
+      pageLength: 100,
       columns: [
         {
           label: '차변잔액',

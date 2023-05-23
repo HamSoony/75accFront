@@ -34,7 +34,6 @@ export default {
       throw new Error(err)
     }
   },
-
   async FETCH_ACCOUNT_SUBJECT_LIST({ commit }) {
     try {
       const { data } = await fetchAccountSubjectList()
@@ -67,20 +66,12 @@ export default {
     }
   },
 
-  async FETCH_FIND_ASSET_BY_CODE_LIST({ commit }, acctCode) {
+  async FETCH_FIND_ASSET_NAME({ commit }, assetName) {
     try {
-      const { data } = await fetchFindAssetByCodeList(acctCode)
-      commit('SET_FIND_ASSET_BY_CODE_LIST', data)
+      console.log(assetName)
+      const {data} = await fetchFindAssetName(assetName)
       console.log(data)
-    } catch (err) {
-      throw new Error(err)
-    }
-  },
-  async FETCH_FIND_ASSET_BY_NAME_LIST({ commit }, acctName) {
-    try {
-      const { data } = await fetchFindAssetByNameList(acctName)
-      commit('SET_FIND_ASSET_BY_NAME_LIST', data)
-      console.log(data)
+      commit('SET_FIND_ASSET_NAME', data)
     } catch (err) {
       throw new Error(err)
     }

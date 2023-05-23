@@ -1,24 +1,32 @@
 export default {
 
 
-  // 자산코드
-  SET_ASSET_CODE_LIST(state, assetCodeList) {
-    state.assetCodeList = assetCodeList
+  // 자산분류코드 리스트
+  SET_ASSET_CODE_LIST(state, accountCodeList) {
+    state.accountCodeList = accountCodeList
+    const assetCodeList = state.accountCodeList;
+
   },
+
+
+
 // 자산 리스트
   SET_CURRENT_ASSET_LIST(state,findCurrentAssetList) {
     findCurrentAssetList.showDetails = false
     state.findCurrentAssetList = findCurrentAssetList
   },
-  //자산 조회(코드)
-  SET_FIND_ASSET_BY_CODE_LIST(state,findAssetByCodeList) {
-    state.findAssetByCodeList = findAssetByCodeList
-  },
+  // //자산 조회(코드)
+  // SET_FIND_ASSET_BY_CODE_LIST(state,findAssetByCodeList) {
+  //   state.findAssetByCodeList = findAssetByCodeList
+  // },
   //자산 조회(코드네임)
-  SET_FIND_ASSET_BY_NAME_LIST(state,findAssetByNameList) {
-    state.findAssetByNameList = findAssetByNameList
+  SET_FIND_ASSET_NAME(state,findAssetNameList) {
+    state.findCurrentAssetList = findAssetNameList
   },
 
+  // SET_ACCOUNT_LEDGER_LIST(state, accountLederList) {
+  //   state.accountLederList = accountLederList
+  // },
   /**
    * 모든계정코드 찾아오기
    * @param state

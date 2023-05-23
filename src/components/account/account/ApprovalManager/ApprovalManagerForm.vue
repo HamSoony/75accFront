@@ -73,8 +73,8 @@
       <!--전표승인 전표반려 버튼 -->
       <div slot="table-actions">
         <ApprovalMenuForm
+          @rejectSlips="rejectSlips"
           @approvalSlip="approvalSlip"
-          @rejectSlip="rejectSlip"
         />
       </div>
 
@@ -220,6 +220,7 @@ export default {
       searchTerm: '',
       slipStatus: [],
       selectedSlip: [],
+      slipNoneApprove: [],
     }
   },
   computed: {
@@ -242,20 +243,32 @@ export default {
 
   },
   created() {
-    this.FETCH_ALL_SLIP()
+    this.FETCH_WAITING_APPROVAL_SLIP()
   },
   methods: {
     // 액션을 가져옴
-    ...mapActions('account/account', ['FETCH_ALL_SLIP', 'APPROVAL_SLIP']),
+    ...mapActions('account/account', ['FETCH_WAITING_APPROVAL_SLIP', 'APPROVAL_SLIP', 'REJECT_SLIP']),
     // 검색
     advanceSearch(val) {
       this.searchTerm = val
     },
+
+    /**
+     * 반려
+     */
+    async rejectSlips() {
+      let selectedId = this.selectedSlip.map( s => s.id)
+      console.log(selectedId)
+      const updateList = await this.REJECT_SLIP(selectedId)
+      // Vue.$toast.info(`전표번호 :${updateList.join()} 승인 되었습니다.`)
+      this.initialSlipList()
+    },
+
     /**
      * 업데이트후 초기화함수
      */
     initialSlipList() {
-      this.FETCH_ALL_SLIP()
+      this.FETCH_WAITING_APPROVAL_SLIP()
     },
     /**
      * 선택된 전표(체크박스)
@@ -268,13 +281,9 @@ export default {
      *
      */
     selectionChanged({ selectedRows }) {
-      this.slipStatus = selectedRows.map(v => v.slipStatus)
 
-      this.selectedSlip = selectedRows.map(newSlip => ({
-        ...newSlip,
-        approvalDate: this.formatDate,
-        approvalEmpCode: sessionStorage.getItem('empCode'),
-      }))
+      this.selectedSlip = selectedRows
+      console.log("this.selectedRows",this.selectedSlip)
     },
     /**
      * 승인받기위한 조건
@@ -283,41 +292,10 @@ export default {
      * 미결 --->승인 o
      */
     async approvalSlip() {
-      const isApprovalStatus = this.slipStatus.includes('승인')
-      const isRejectStatus = this.slipStatus.includes('반려')
-      if (isApprovalStatus) {
-        Vue.$toast.info('승인된 전표가 이미 있습니다!')
-      } else if (isRejectStatus) {
-        Vue.$toast.info('반려된 전표는 재작성 후 승인받으세요!')
-      } else {
-        const approvalSlip = this.selectedSlip.map(newSlip => ({
-          ...newSlip,
-          slipStatus: '승인',
-        }))
-        const updateList = await this.APPROVAL_SLIP(approvalSlip)
-        Vue.$toast.info(`전표번호 :${updateList.join()} 승인 되었습니다.`)
-        this.initialSlipList()
-      }
-    },
-    /**
-     * 반려
-     */
-    async rejectSlip() {
-      console.log('반려')
-      const isApprovalStatus = this.slipStatus.includes('승인')
-      const isRejectStatus = this.slipStatus.includes('반려')
-      if (isApprovalStatus) {
-        Vue.$toast.info('승인된 전표는 반려가 불가능합니다!')
-        return
-      } if (isRejectStatus) {
-        Vue.$toast.info('이미 반려된 전표가 있습니다!')
-      } else {
-        const rejectSlip = this.selectedSlip.map(newSlip => ({
-          ...newSlip,
-          slipStatus: '반려',
-        }))
-        const updateList = await this.APPROVAL_SLIP(rejectSlip)
-        Vue.$toast.info(`전표번호 :${updateList.join()} 반려 되었습니다.`)
+      let selectedId = this.selectedSlip.map( s => s.id)
+      console.log("Approve")
+        const updateList = await this.APPROVAL_SLIP(selectedId)
+        // Vue.$toast.info(`전표번호 :${updateList.join()} 승인 되었습니다.`)
         this.initialSlipList()
       }
     },
@@ -332,7 +310,9 @@ export default {
       } else {
         this.$router.push({ name: 'journalForm', params: { selectedSlip } })
       }
-    },
-  },
-}
+    }
+
+  }
+
+
 </script>

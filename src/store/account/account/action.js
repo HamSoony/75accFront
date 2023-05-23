@@ -1,5 +1,13 @@
 import {
-  deleteSlip, registerSlip, selectSlip, selectSlips, editSlip, approvalSlip, selectJournals,
+  deleteSlip,
+  registerSlip,
+  selectSlip,
+  selectSlips,
+  editSlip,
+  approvalSlip,
+  selectJournals,
+  watingApproveSlips,
+  rejectSlip,
 } from '@/api/account/account'
 
 export default {
@@ -9,7 +17,7 @@ export default {
    * @returns {Promise<*>}
    * @constructor
    */
-  async FETCH_ALL_SLIP({ commit }) { // 객체로 넘어오면 {}
+  async FETCH_ALL_SLIP({commit}) { // 객체로 넘어오면 {}
     try {
       const response = await selectSlips()
 
@@ -27,9 +35,9 @@ export default {
    * @returns {Promise<{slipNo: string, reportingEmpName: string, approvalDate: string, reportingEmpCode: string, slipStatus: string, accountPeriodNo: string, expenseReport: string, reportingDate: string, slipType: string, deptCode: string, status: string}|{}|*>}
    * @constructor
    */
-  async FETCH_SLIP({ commit }, slipNo) { // 객체로 넘어오면 {}
+  async FETCH_SLIP({commit}, slipNo) { // 객체로 넘어오면 {}
     try {
-      let {data}  = await selectSlip(slipNo)
+      let {data} = await selectSlip(slipNo)
       commit('SET_SILP', data.slip)
       return data.slip
     } catch (err) {
@@ -81,27 +89,26 @@ export default {
       throw new Error(err)
     }
   },
-  /**
-   * restApi 사용하기위해 api를 여러번 호출한다.
-   * 비동기로 처리하기위해 reduce함수와 Promise.resolve()를 사용하여 기존 pendding상태의 promise 반환값을 이행후 반환값으로 바꿈
-   * 업데이트된 전표번호를 서버단에서 받고 리턴하여 화면에 업데이트된 번호를 볼수있다.
-   * Promise.resolve 덕분에 빈 Promise객체로 초기화 가능
-   */
-  /**
-   * 전표 승인 AND 전표 반려!!!
-   * @param _
-   * @param slipList
-   * @returns {Promise<*[]>}
-   * @constructor
+
+  /*
+   *전표 승인
    */
   async APPROVAL_SLIP(_, slipList) {
     try {
-      const updateList = []
-      await slipList.reduce((pre, slip) => pre.then(async () => {
-        const response = await approvalSlip(slip)
-        updateList.push(response.data.updateSlipNo)
-      }), Promise.resolve())
-      return updateList
+      const response = await approvalSlip(slipList)
+      return response
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  /*
+ *전표 반려
+ */
+  async REJECT_SLIP(_, slipList) {
+    try {
+      const response = await rejectSlip(slipList)
+      return response
     } catch (err) {
       throw new Error(err)
     }
@@ -114,11 +121,26 @@ export default {
    * @returns {Promise<*>}
    * @constructor
    */
-  async SEARCH_JOURNAL({ commit }, date = {}) {
+  async SEARCH_JOURNAL({commit}, date = {}) {
     try {
       const response = await selectJournals(date)
-      commit('SET_JOURNAL_LIST', response.data)
+      commit('SET_JOURNAL_LIST', response.data.journal)
       return response
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  /**
+   * 대기중인 전표 조회
+   */
+  async FETCH_WAITING_APPROVAL_SLIP({commit}) { // 객체로 넘어오면 {}
+    try {
+      const response = await watingApproveSlips()
+
+      commit('SET_SILP_LIST', response.data.slip)
+      // eslint-disable-next-line no-undef
+      return response.data
     } catch (err) {
       throw new Error(err)
     }
