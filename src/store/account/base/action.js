@@ -69,7 +69,7 @@ export default {
   async FETCH_FIND_ASSET_NAME({ commit }, assetName) {
     try {
       console.log(assetName)
-      const {data} = await fetchFindAssetName(assetName)
+      const {data} = await fetchFindAssetByNameList(assetName)
       console.log(data)
       commit('SET_FIND_ASSET_NAME', data)
     } catch (err) {
