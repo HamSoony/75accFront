@@ -166,6 +166,7 @@
               </b-col>
             </b-row>
 
+
             <b-row class="my-1">
               <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 당기말상각누계액</b></b-col>
               <b-col sm="4">
