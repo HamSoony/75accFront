@@ -8,7 +8,7 @@ export default {
     cashJournalList: [],
     totaltrialList: [],
     incomeList: [],
-    financialPositionList: [],
+    financialPositions: [],
     monthIncomeList: [],
     cashFlowList: [],
     costList: [],

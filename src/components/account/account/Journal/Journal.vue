@@ -37,7 +37,7 @@
     <vue-good-table
       ref="myTable"
       :columns="columns"
-      :rows="journalList"
+      :rows="journalData"
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
@@ -55,7 +55,7 @@
         perPage:pageLength
       }"
       theme="black-rhino"
-      @on-selected-rows-change="selectionChanged"
+      @on-selected-rows-change=""
     >
       <!-- pagination -->
       <template
@@ -146,7 +146,7 @@ export default {
         },
         {
           label: '차변계정',
-          field: 'leftAccountName',
+          field: 'leftAcctName',
         },
         {
           label: '차변금액',
@@ -154,7 +154,7 @@ export default {
         },
         {
           label: '대변계정',
-          field: 'rightAccountName',
+          field: 'rightAcctName',
         },
         {
           label: '대변금액',
@@ -162,7 +162,7 @@ export default {
         },
         {
           label: '거래처',
-          field: 'customerName',
+          field: 'cterName',
         },
         {
           label: '적요',
@@ -174,6 +174,7 @@ export default {
       selectedArray: [],
       endDate: '',
       startDate: '',
+      journalData: [],
     }
   },
   computed: {
@@ -207,6 +208,24 @@ export default {
       if (response.status === 204) {
         Vue.$toast.info('검색결과가 존재하지 않습니다')
       }
+      console.log("response",this.journalList)
+      this.journalData = this.journalList.map(v => {
+        if (v.rightCreditsPrice===0){
+          v.leftAcctName = v.acctInnerCode
+          v.rightCreditsPrice = ""
+
+          return v
+        }
+        else {
+          v.rightAcctName = v.acctInnerCode
+          v.leftDebtorPrice = ""
+
+          return v
+        }
+          })
+
+      console.log("this.journalData",this.journalData)
+
     },
 
   },

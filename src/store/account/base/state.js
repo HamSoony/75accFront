@@ -5,6 +5,7 @@ export default {
   namespaced: true,
   state: {
     accountCodeList: [],
+    accountSubjectList:[],
     accountList: [],
     accountCustomerList: [],
     accountControllCodeList: [],
@@ -14,6 +15,7 @@ export default {
     id:'',
 
     assetCodeList: [],
+    findAssetName: [],
     findCurrentAssetList:[],
     findAssetByCodeList:[],
     findAssetByNameList:[],
@@ -47,7 +49,8 @@ export default {
      * @constructor
      */
     GET_ACCOUNT_LEDER_TREE_LIST(state) {
-      const rootList = state.accountCodeList.filter(value => value.leaf === '0').map(v => ({ value: v, text: v.accountName }))
+      // console.log('루트', state.accountCodeList2)
+      const rootList = state.accountSubjectList.filter(value => value.leaf === '0').map(v => ({ value: v, text: v.acctName }))
       rootList.shift()
       rootList.unshift({ value: null, text: '계정과목을 선택해주세요' })
       return rootList
@@ -72,14 +75,14 @@ export default {
       return findCurrentAssetList
     },
 
-    GET_FIND_ASSET_BY_CODE_LIST({commit}, acctCode) {
-      const findAssetByCodeList = Promise.resolve(acctCode);
-      return findAssetByCodeList;
-    },
-
-    GET_FIND_ASSET_BY_NAME_LIST({commit}, acctName) {
-      const findAssetByNameList = Promise.resolve(acctName);
-      return findAssetByNameList;
+    // GET_FIND_ASSET_BY_CODE_LIST({commit}, acctCode) {
+    //   const findAssetByCodeList = Promise.resolve(acctCode);
+    //   return findAssetByCodeList;
+    // },
+    //
+    GET_FIND_ASSET_NAME(state) {
+      const findAssetName =state.findAssetName;
+      return findAssetName;
     },
 
 

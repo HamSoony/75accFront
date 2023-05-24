@@ -6,7 +6,7 @@ const CUSTOMER_URL = '/customer'
 const CURRENT_ASSET_LIST_URL = '/currentAsset/assetList'
 const CURRENT_ASSET_CODE_LIST_URL = '/account/account/accountList'
 const FIND_CURRENT_ASSET_BY_CODE_LIST = '/currentAsset/findAssetByCodeList'
-const FIND_CURRENT_ASSET_BY_NAME_LIST = '/currentAsset/findAssetByNameList'
+const FIND_CURRENT_ASSET_NAME = '/currentAsset/findAssetName'
 
 
 /**
@@ -24,16 +24,22 @@ function fetchCurrentAssetList() {
  * @returns {*}
  */
 function fetchFindAssetByCodeList(acctCode) {
-    return accountApi.get(`/acc/currentAsset/findAssetByCodeList`, acctCode)
+    return accountApi.get(`/currentAsset/findAssetByCodeList`, acctCode)
 }
 
 /**
- * 자산 조건(acctName) 조회
+ * 자산 조건(assetName) 조회
  * @param
  * @returns {*}
  */
-function fetchFindAssetByNameList(acctName) {
-    return accountApi.get(`/acc/currentAsset/findAssetByNameList`, acctName)
+function fetchFindAssetByNameList(assetName) {
+    console.log(assetName)
+    const data = accountApi.get("/currentAsset/findAssetName", {
+        params:
+            assetName,
+    })
+    console.log(data)
+    return data
 }
 
 /**
@@ -64,12 +70,22 @@ function fetchAccountCodeList() {
     return accountApi.get(`${ACCOUNT_CODE_URL}/accountList`)
 }
 
+
+/**
+ * 계정과목관리
+ */
+function fetchAccountSubjectList() {
+    return accountApi.get(`${ACCOUNT_CODE_URL}/accountCodes`)
+}
+
+
 /**
  * 계정코드삭제
  * @param accountCode
  * @returns {*}
  */
 function deleteAccountCode(accountInnerCode) {
+    console.log(accountInnerCode)
     return accountApi.delete(`${ACCOUNT_CODE_URL}/${accountInnerCode}`)
 }
 
@@ -79,8 +95,9 @@ function deleteAccountCode(accountInnerCode) {
  * @returns {*}
  */
 function addAccountCode(accountCode) {
-    return accountApi.post(`${ACCOUNT_CODE_URL}`, accountCode)
+    return accountApi.post(`${ACCOUNT_CODE_URL}/accountCodes`, accountCode)
 }
+
 
 /**
  * 계정별원장
@@ -154,9 +171,20 @@ function saveCustomer(newCustomer){
 }
 
 export {
-    fetchAccountCode, fetchAccountCustomerCode, fetchAccountControllCode, fetchAccountLedger, fetchGeneralAccountLedger, fetchAccountCodeList, deleteAccountCode, addAccountCode, searchCustomerInfoList, deleteCustomerCode,saveCustomer,
+    fetchAccountCode,
+    fetchAccountCustomerCode,
+    fetchAccountControllCode,
+    fetchAccountLedger,
+    fetchGeneralAccountLedger,
+    fetchAccountCodeList,
+    deleteAccountCode,
+    addAccountCode,
+    searchCustomerInfoList,
+    deleteCustomerCode,
+    saveCustomer,
     fetchAssetCodeList,
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,
     fetchFindAssetByNameList,
+    fetchAccountSubjectList
 }

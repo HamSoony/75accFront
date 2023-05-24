@@ -1,59 +1,74 @@
 <template>
-  <b-col>
-    <div class="test">
-      <b-row align-v="center">
-        <b-col sm="1" style="padding-bottom: 10px">자산코드</b-col>
-        <b-col sm="3" style="padding-bottom: 10px">
+  <div>
+    <b-container style="padding: 20px; ">
+    <b-row>
+      <b-col sm="1" style="padding-bottom: 10px"><b>자산코드</b></b-col>
+      <b-col sm="3" style="padding-bottom: 10px">
+        <b-form-input
+            v-model="assetCode"
+            placeholder="Search"
+            type="text"
+            class="d-inline-block"
+            style="font-size:1rem; font-weight: bold"
+            @input="advanceSearch1"
+        />
+      </b-col>
+
+      <b-col cols="1" style="padding-bottom: 10px"><b>자산명</b></b-col>
+      <b-col cols="3" style="padding-bottom: 10px">
+        <b-form-input
+            v-model="assetName"
+            placeholder="Search"
+            type="text"
+            class="d-inline-block"
+            style="font-size:1rem; font-weight: bold"
+            @keyup.enter="searchAssetName"
+        />
+      </b-col>
+    </b-row>
+
+    <b-row >
+      <b-col cols="1"><b>자산분류코드</b></b-col>
+      <b-col cols="3">
+        <b-form-group>
           <b-form-input
+              v-model="accountCode"
               placeholder="Search"
               type="text"
               class="d-inline-block"
-              @input="advanceSearch1"
-          />
-        </b-col>
-        <b-col cols="1" style="padding-bottom: 10px">자산명</b-col>
-        <b-col cols="3" style="padding-bottom: 10px">
-          <b-form-input
-              placeholder="Search"
-              type="text"
-              class="d-inline-block"
-              @input="advanceSearch2"
-          />
-        </b-col>
-
-        <div class="w-100"></div>
-
-        <b-col cols="1">자산분류코드</b-col>
-        <b-col cols="3">
-          <b-form-select
-              id="name"
-              v-model="selected"
-              :options="GET_ASSET_CODE_LIST"
-              width="70%"
-              @change="selectedCode"
+              style="font-size:1rem; font-weight: bold"
+              @click="searchAccountCode"
           >
-            <b-form-select-option :value="null">계정과목을 선택해주세요</b-form-select-option>
-          </b-form-select>
-        </b-col>
+          </b-form-input>
+        </b-form-group>
+      </b-col>
 
-        <b-col cols="1">인수날짜</b-col>
-        <b-col cols="3">
-          <b-form-group>
-            <b-form-input
-                placeholder="Search"
-                type="date"
-                class="d-inline-block"
-            />
-          </b-form-group>
-        </b-col>
-      </b-row>
-    </div>
+      <b-col cols="1"><b>취득일자</b></b-col>
+      <b-col cols="3">
+        <b-form-group>
+          <b-form-input
+              v-model="progress"
+              placeholder="Search"
+              type="date"
+              class="d-inline-block"
+              style="font-size:1rem; "
+          />
+        </b-form-group>
+      </b-col>
+
+      <b-col cols="2">
+        <inputAsset/>
+      </b-col>
+
+    </b-row>
+    </b-container>
 
     <div>
       <b-table
           :items="findCurrentAssetList"
           :fields="columns2"
           striped responsive="sm"
+
       >
         <template #cell(showDetails)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
@@ -62,83 +77,168 @@
         </template>
 
         <template #row-details="row">
-          <b-card>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>자산코드 :</b></b-col>
-              <b-col>{{ row.item.assetCode.assetCode }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>인수비용 :</b></b-col>
-              <b-col>{{ row.item.assetCode.acquistionCost }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>감각삼각비용 :</b></b-col>
-              <b-col>{{ row.item.assetCode.depreciation }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>장부가치 :</b></b-col>
-              <b-col>{{ row.item.assetCode.bookValue }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>감각법 :</b></b-col>
-              <b-col>{{ row.item.assetCode.amortizationWay }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>상환마직막년도 :</b></b-col>
-              <b-col>{{ row.item.assetCode.amortizationFinalYear }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>내용연수 :</b></b-col>
-              <b-col>{{ row.item.assetCode.usefullife }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>감각비율 :</b></b-col>
-              <b-col>{{ row.item.assetCode.amortizationRate }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>개월수 :</b></b-col>
-              <b-col>{{ row.item.assetCode.month }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>일반상환비용 :</b></b-col>
-              <b-col>{{ row.item.assetCode.normalAmortization }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right"><b>누적삼각비용 :</b></b-col>
-              <b-col>{{ row.item.assetCode.raccumulatedAmortization }}</b-col>
-            </b-row>
-            <b-row class="mb-2">
-              <b-col sm="2" class="text-sm-right"></b-col>
-              <b-col sm="6">
-                <b-form-input></b-form-input>
-              </b-col>
-              <b-col sm="2" class="text-sm-right"><b>기말장부가치 </b></b-col>
+          <b-card style="padding: 20px">
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-" style="font-size: 1.1rem;"><b> | 사업장 </b></b-col>
               <b-col sm="2">
-                <b-form-input :value="row.item.assetCode.bookValueend" disabled></b-form-input>
+                <b-form-input :value="0" disabled class="text-sm-center" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 관리부서 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="0" disabled class="text-sm-center" style="font-size: 1.2rem;"></b-form-input>
               </b-col>
             </b-row>
-            <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 내용연수</b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="row.item.assetCode.usefullife" disabled class="text-sm-center"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 상환마직막년도</b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="row.item.assetCode.amortizationFinalYear" disabled class="text-sm-center"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 개월수 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="row.item.assetCode.month" disabled class="text-sm-center"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 취득수량 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="0" disabled class="text-sm-center" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 잔존수량 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="0" disabled class="text-sm-center" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 증감수량 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="0" disabled class="text-sm-center" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 감가법 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="row.item.assetCode.amortizationWay" disabled class="text-sm-center"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 감가비율 </b></b-col>
+              <b-col sm="2">
+                <b-form-input :value="row.item.assetCode.amortizationRate" disabled class="text-sm-center"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 취득원가 </b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="row.item.assetCode.acquistionCost" disabled class="text-sm-right"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 전기말 상각누가액 </b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="0" disabled class="text-sm-right" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 전기말 장부가액</b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="0" disabled class="text-sm-right" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b> | 감각삼각비용 </b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="row.item.assetCode.depreciation" disabled class="text-sm-right"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 잔존가치</b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="0" disabled class="text-sm-right" style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 당기말상각누계액</b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="row.item.assetCode.normalAmortization" disabled class="text-sm-right"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 당기기말장부가액 </b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="row.item.assetCode.bookValueend" disabled class="text-sm-right"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="my-1">
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 장부가치 </b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="row.item.assetCode.bookValue" disabled class="text-sm-right"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+              <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 누적상환비용 </b></b-col>
+              <b-col sm="4">
+                <b-form-input :value="row.item.assetCode.accumulatedAmortization" disabled class="text-sm-right"
+                              style="font-size: 1.2rem;"></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-button
+                class="icon-align-right"
+                @click="row.toggleDetails"
+            >Hide Details
+            </b-button>
           </b-card>
         </template>
       </b-table>
     </div>
-  </b-col>
+    <!-- 계정코드 , 계정명 전용 모달-->
+    <b-modal
+        id="accountCode"
+        ref="accountModal"
+        title="계정코드 찾기"
+    >
+      <p class="my-5">
+        <AccountCodeModal
+            v-model:value="accountCode"
+            condition="accountCode"
+        />
+      </p>
+    </b-modal>
+  </div>
 </template>
 
 <script>
 import {VueGoodTable} from 'vue-good-table';
 import {size} from "lodash";
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+import AccountCodeModal from '../modal/AccountCodeModal'
+import inputAsset from '../asset/inputAsset.vue'
 import Vue from "vue";
+
 
 export default {
   data() {
     return {
-      nweFindCurrentAssetList: [],
-      assetType: [],
+      assetCode: '',
+      accountCode: '',
+      progress: '',
+      assetName: '',
+
+      showModal: false,
       selected: null,
       accountCodeList: [],
-      fields: ['accountInnerCode', 'accountName'],
+      fields: ['acctInnerCode', 'acctName'],
       dpts: {
         'administration': '총무부',
         'sales': '영업부',
@@ -155,7 +255,7 @@ export default {
         {'acctCode': '자산분류코드'},
         {'acctName': '자산분류명'},
         {'assetName': '자산명'},
-        {'progress': '인수날짜'},
+        {'progress': '취득일자'},
         {'finalizeStatus': '상태'},
         {'showDetails': '상세보기'}
       ],
@@ -210,30 +310,65 @@ export default {
     };
 
   },
+  components: {
+    AccountCodeModal, inputAsset
+
+  },
   computed: {
     /**
      * 이렇게 변수에 할당해서 사용한다면 위의 data에 선언필요 x
      */
-    ...mapState('account/base', ['findCurrentAssetList']),
-    ...mapGetters('account/base', ['GET_CURRENT_ASSET_LIST', 'GET_ASSET_CODE_LIST']),
+    ...mapState('account/base',
+        ['findCurrentAssetList',
+          'accountLederList',
+        ]),
+    ...mapGetters('account/base',
+        ['GET_CURRENT_ASSET_LIST',
+          'GET_ASSET_CODE_LIST',
+          'GET_FIND_ASSET_NAME',
+          'GET_ACCOUNT_LEDER_LIST'
+        ]),
 
+  },
+  beforeDestroy() {
+    this.CLEAR_ACCOUNT_LEDGER_LIST()
   },
 
   created() {
-    this.FETCH_CURRENT_ASSET_LIST(), this.FETCH_ASSET_CODE_LIST()
+    this.FETCH_CURRENT_ASSET_LIST(),
+        this.FETCH_ASSET_CODE_LIST()
   },
 
   methods: {
-    ...mapActions('account/base', ['FETCH_CURRENT_ASSET_LIST', 'FETCH_ASSET_CODE_LIST']),
-    selectionChanged(params) {
-      console.log("params: " + params)
+    ...mapActions('account/base',
+        ['FETCH_CURRENT_ASSET_LIST',
+          'FETCH_ASSET_CODE_LIST',
+          'FETCH_FIND_ASSET_NAME'
+        ]),
+    ...mapMutations('account/base',
+        ['CLEAR_ACCOUNT_LEDGER_LIST',
+        ]),
+    async searchAssetName() {
+      if (this.assetName === '') {
+        Vue.$toast.info('자산명을 입력해주세요')
+        return
+      }
+      const assetName = {
+        assetName: this.assetName
+      }
+      const response = await this.FETCH_FIND_ASSET_NAME(assetName)
+      if (response.status === 204) {
+        Vue.$toast.info('검색결과가 존재하지 않습니다')
+      }
     },
-    advanceSearch1(val) {
-      this.searchValue = val
+
+    /**
+     * 계정과목 모달 띄우기
+     */
+
+    searchAccountCode() {
+      this.$root.$emit('bv::show::modal', 'accountCode', '#focusThisOnClose')
     },
-    advanceSearch2(val) {
-      this.searchValue = val
-    }
     /**
      *
      * 안내문구 클릭시 alert창을 띄워서 처리
@@ -263,6 +398,7 @@ export default {
 
 .test {
   display: flex;
+
   div {
     padding-right: 10px;
   }
@@ -317,6 +453,4 @@ export default {
   font-weight: bold;
 }
 
-<
-/
-sty
+</style>

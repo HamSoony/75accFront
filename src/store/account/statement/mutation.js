@@ -54,6 +54,7 @@ export default {
      * @constructor
      */
   SET_INCOME_LIST(state, incomeList) {
+    console.log(incomeList);
     state.incomeList = incomeList
   },
   CLEAR_INCOME_LIST(state) {
@@ -62,14 +63,15 @@ export default {
   /**
      * 재무상태표
      * @param state
-     * @param financialPositionList
+     * @param financialPositions
      * @constructor
      */
-  SET_FINANCIAL_POSITION_LIST(state, financialPositionList) {
-    state.financialPositionList = financialPositionList
+  SET_FINANCIAL_POSITION_LIST(state, financialPositions) {
+    console.log(financialPositions);
+    state.financialPositions = financialPositions
   },
   CLEAR_FINANCIAL_POSITION_LIST(state) {
-    state.financialPositionList = []
+    state.financialPositions = []
   },
   /**
      *  월별 손익계산서

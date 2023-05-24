@@ -50,16 +50,22 @@ export default {
       searchAccountCode: '',
       searchAccountName: '',
       fields: ['acctInnerCode', 'acctName'],
-      value: {},
-      assetList: ['assetList'],
+      value: {}
     }
   },
 
   computed: {
     ...mapState('account/base', ['accountList']),
-  },
+    assetList() {
+      const startIndex = 2;
+      const endIndex = 6;
+      const newList = this.accountList.slice(startIndex, endIndex);
+      return newList;
+      console.log("assetList :" + assetList);
+    }
+},
   created() {
-    this.FETCH_ACCOUNT_CODE_LIST();
+    this.FETCH_ASSET_CODE_LIST();
   },
 
   // 모달창이 없어질떄 호출
@@ -68,7 +74,8 @@ export default {
   },
   methods: {
     ...mapMutations('account/base', ['CLEAR_CODE_LIST']),
-    ...mapActions('account/base', ['FETCH_ACCOUNT_CODE','FETCH_ACCOUNT_CODE_LIST']),
+    ...mapActions('account/base', ['FETCH_ACCOUNT_CODE',
+      'FETCH_ACCOUNT_CODE_LIST']),
 
     // 검색버튼
     searchCode() {
@@ -82,7 +89,6 @@ export default {
           accountName: this.searchAccountCode,
         }
         this.FETCH_ACCOUNT_CODE(searchCode)
-
     },
     // 선택된 로우
     onRowSelected(selectedItem) {
@@ -96,7 +102,6 @@ export default {
       const { acctInnerCode,acctName } = selectedItem[0]
       this.value = { acctInnerCode,acctName }
       this.$emit('input', this.value.acctInnerCode)
-
     },
 
   },
