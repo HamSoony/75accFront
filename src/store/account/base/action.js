@@ -11,6 +11,7 @@ import {
   saveCustomer,
   fetchAssetCodeList,
   fetchCurrentAssetList,
+  saveAsset,
   fetchFindAssetByCodeList,
   fetchFindAssetByNameList,
   fetchAccountSubjectList,
@@ -76,6 +77,16 @@ export default {
       throw new Error(err)
     }
   },
+  async SAVE_ASSET({commit}, newAsset){
+    try {
+      console.log( "new " + newAsset)
+      await saveAsset(newAsset)
+
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
   /**
    * 계정코드 삭제
    * APPROVAL_SLIP을 주석을 참조하시면 이accountCodeList해하실수 있습니다.

@@ -485,7 +485,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('account/base', ['accountLederList']),
+    ...mapState('account/base', ['accountLederList',]),
     ...mapGetters('account/base', ['GET_ACCOUNT_LEDER_LIST']),
 
   },
