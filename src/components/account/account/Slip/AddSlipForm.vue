@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div>
+
+
+      <table class="table table-row-spacing">
+        <thead>
+        <tr>
+          <th>
+
       <MenuSlipForm
         style="justify-content: end"
         :active-button="activeButton"
@@ -10,12 +16,35 @@
         @submitResult="submit"
       />
 
+
+          </th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+        <tr>
+          <td>
+
+
       <h1>전표</h1>
       <b-table
         :items="newSlipForm"
         :fields="slipFiled"
+        striped
       >
       </b-table>
+
+
+
+
+
+
+
+
+
+
       <h1>분개 </h1>
       <b-table
         :items="newJournalForm"
@@ -50,53 +79,110 @@
           <span v-else @click="editCellHandler(data, 'rightCreditsPrice')">{{data.value}}</span>
         </template>
 
-
-
       </b-table>
 
+        </td>
+        </tr>
+
+
+
+<!--현금 관련--->
+    <tr v-if="JournalDetailConditions===`현금`">
+      <td >
       <h1>분개상세 </h1>
 
       <b-row>
         프로젝트
         <b-col md="1" ><input type="text" v-model:value="newJournalDetailForm.wpCode" @click="showWorkPlaceModal" /></b-col>
         <b-col md="2"><input size="10" type="text" v-model:value="newJournalDetailForm.wpName" @click="showWorkPlaceModal" /></b-col>
-        사용부서
+        자금과목
         <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.deptCode" @click="showDepartmentModal" /></b-col>
-        <b-col md="3"><input type="text" v-model:value="newJournalDetailForm.deptName" @click="showDepartmentModal" /></b-col>
-        관리번호
+        <b-col md="3"><input type="text" size="10" v-model:value="newJournalDetailForm.deptName" @click="showDepartmentModal" /></b-col>
+        품번
         <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
       </b-row>
 
       <b-row class="mt-1">
         요청일
-        <b-col md="2" ><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2" ><input type="date" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
         상환일
-        <b-col md="2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2"><input type="date" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
         환종
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        <b-col md="2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="1" ><input type="text"  size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2" class="pl-2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
         환율
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
       </b-row>
 
       <b-row class="mt-1">
         외화금액
-        <b-col md="2" ><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        관리율
-        <b-col md="2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2.5" class="pr-5" ><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        이자율
+        <b-col md="2.5" class="pr-5"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
         사용자정의
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        <b-col md="1"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2.5"><input type="text" size="15" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2.5" class="pr-5"><input type="text"  size="9" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
         사용자정의
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        <b-col md="1"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2.5"><input type="text" size="15" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+        <b-col md="2.5"><input type="text"  size="9" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
       </b-row>
 
-      <div />
 
-    </div>
+    </td>
+    </tr>
 
-    <div>
+<!--업무용 승합차-->
+        <tr v-if="JournalDetailConditions===`업무용승용차`">
+          <td >
+            <h1>분개상세 </h1>
+
+            <b-row>
+              프로젝트
+              <b-col md="1" ><input type="text" v-model:value="newJournalDetailForm.wpCode" @click="showWorkPlaceModal" /></b-col>
+              <b-col md="2"><input size="10" type="text" v-model:value="newJournalDetailForm.wpName" @click="showWorkPlaceModal" /></b-col>
+              사용부서
+              <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.deptCode" @click="showDepartmentModal" /></b-col>
+              <b-col md="3"><input type="text" size="10" v-model:value="newJournalDetailForm.deptName" @click="showDepartmentModal" /></b-col>
+              품번
+              <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+            </b-row>
+
+            <b-row class="mt-1">
+              요청일
+              <b-col md="2" ><input type="date" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              상환일
+              <b-col md="2"><input type="date" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              환종
+              <b-col md="1" ><input type="text"  size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              <b-col md="2" class="pl-2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              환율
+              <b-col md="2"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+            </b-row>
+
+            <b-row class="mt-1">
+              외화금액
+              <b-col md="2.5" class="pr-5" ><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              이자율
+              <b-col md="2.5" class="pr-5"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              업무용승용차
+              <b-col md="2.5"><input type="text" size="15" v-model:value="newJournalDetailForm.accountControlName" :disabled="false" /></b-col>
+              <b-col md="2.5" class="pr-5"><input type="text"  size="9" v-model:value="newJournalDetailForm.accountControlName" :disabled="false" /></b-col>
+              사용자정의
+              <b-col md="2.5"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+              <b-col md="2.5"><input type="text"  size="9" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
+            </b-row>
+
+
+          </td>
+        </tr>
+
+
+
+
+
+    <tr>
+      <td>
+
       <h1> 총 합 </h1>
       <b-row>
         <b-col>
@@ -119,7 +205,11 @@
         </b-col>
       </b-row>
 
-    </div>
+      </td>
+    </tr>
+    </tbody>
+    </table>
+
 
 
 
@@ -293,6 +383,8 @@ export default {
 
       departmentSelectedData:{},
 
+      JournalDetailConditions:"",
+
 
 
 
@@ -439,6 +531,7 @@ export default {
 
 
     editCellHandler(data, name) {
+      console.log("data =",data)
       this.newJournalForm = this.newJournalForm.map(item => ({...item, isEdit: false}));
       this.newJournalForm[data.index].isEdit = true;
       this.selectedCell = name
@@ -511,7 +604,15 @@ export default {
       this.newJournalDetailForm.wpName=item.journalDetail.wpName
       this.newJournalDetailForm.deptCode=item.journalDetail.deptCode
       this.newJournalDetailForm.deptName=item.journalDetail.deptName
+      if(item.acctName.includes("현금")){
+        this.JournalDetailConditions = "현금"
+
+      }
+      else if(item.acctName.includes("보험")){
+        this.JournalDetailConditions = "업무용승용차"
+      }
       console.log("JournalClicked", this.selectedJournal)
+
     }
     ,
 
@@ -583,6 +684,14 @@ export default {
   overflow: hidden;
   transition: .35s height;
 }
+
+.table-row-spacing tbody tr {
+  margin-bottom: 10px;
+  background-color: #fff6f3;
+  border-bottom: white 3px solid;
+  border-top: white 3px solid;
+}
+
 
 
 
