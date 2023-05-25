@@ -5,39 +5,45 @@
       <template #modal-header>
         <h2>자산 등록양식</h2>
       </template>
-      <b-container>
+      <b-container style="margin-bottom: 10px">
+        <b-form>
         <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>사업장 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>`
+            <b-form-input
+            v-model="asset.workplace"
+            ></b-form-input>
           </b-col>
 
           <b-col sm="2" class="text-sm-left"><b>관리부서 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.department"></b-form-input>
           </b-col>
         </b-row>
 
         <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>자산코드 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.assetCode"></b-form-input>
           </b-col>
 
           <b-col sm="2" class="text-sm-left"><b>자산명 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.assetName"></b-form-input>
           </b-col>
         </b-row>
 
         <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>자산분류코드 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input v-model="asset.acctCode"></b-form-input>
           </b-col>
           <b-col sm="2" class="text-sm-left"><b>자산분류명 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input v-model="asset.acctName"></b-form-input>
           </b-col>
         </b-row>
 
@@ -45,121 +51,182 @@
           <b-col sm="2" class="text-sm-left"><b>취득일자 </b></b-col>
           <b-col sm="4">
             <b-form-input
-                v-model="ㅊ"
-                placeholder="Search"
+                v-model="asset.progress"
                 type="date"
-                class="d-inline-block"/>
+                class="d-inline-block"
+                @change="calculate3"
+               />
           </b-col>
           <b-col sm="2" class="text-sm-left"><b>상태 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-select
+                v-model="asset.finalizeStatus"
+                :options="options" >
+              <template #first>
+                <b-form-select-option
+                    :value="null" disabled
+                >--  Select an option  --</b-form-select-option>
+              </template>
+            </b-form-select>
+
           </b-col>
 
         </b-row>
 
         <b-row class="mt-1">
-          <b-col sm="3" class="text-sm-left"><b>취득원가 </b></b-col>
-          <b-col sm="9">
-            <b-form-input></b-form-input>
+          <b-col sm="2" class="text-sm-left"><b>취득원가 </b></b-col>
+          <b-col sm="4">
+            <b-form-input
+            v-model="asset.acqCost"/>
           </b-col>
-        </b-row>
-
-        <b-row class="mt-1">
-          <b-col sm="3" class="text-sm-left"><b>전기말상각누계액 </b></b-col>
-          <b-col sm="9">
-            <b-form-input></b-form-input>
-          </b-col>
-        </b-row>
-
-        <b-row class="mt-1">
-          <b-col sm="3" class="text-sm-left"><b>전기말장부가액 </b></b-col>
-          <b-col sm="9">
-            <b-form-input></b-form-input>
-          </b-col>
-        </b-row>
-
-        <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>내용연수 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.usefullife "
+                @keyup.stop="calculate1"  />
           </b-col>
+        </b-row>
+
+        <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>개월수 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.month"
+
+                />
           </b-col>
-        </b-row>
-        <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>취득수량 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.acqQuantity"
+                />
           </b-col>
+        </b-row>
+        <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>증감수량 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input
+                v-model="asset.chanQuantity"
+                @keyup.stop="calculate2"/>
           </b-col>
-        </b-row>
-
-        <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>잔존수량 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input v-model="asset.remanQuantity " disabled/>
           </b-col>
+        </b-row>
+
+        <b-row class="mt-1">
           <b-col sm="2" class="text-sm-left"><b>감가비율 </b></b-col>
           <b-col sm="4">
-            <b-form-input></b-form-input>
+            <b-form-input v-model="asset.amorRate " disabled/>
+          </b-col>
+          <b-col sm="2" class="text-sm-left"><b>감가삼각비용 </b></b-col>
+          <b-col sm="4">
+            <b-form-input v-model="asset.depExpense " disabled/>
           </b-col>
         </b-row>
-
         <b-row class="mt-1">
-          <b-col sm="3" class="text-sm-left"><b>감가삼각비용 </b></b-col>
-          <b-col sm="9">
-            <b-form-input></b-form-input>
+          <b-col>
+            <b-button
+                type="reset"
+                variant="outline-secondary"
+            >
+              Reset
+            </b-button>
           </b-col>
         </b-row>
 
+        </b-form>
         <b-row class="mt-1">
-          <b-col sm="3" class="text-sm-left"><b>당기말상각누계액 </b></b-col>
-          <b-col sm="9">
-            <b-form-input></b-form-input>
+          <b-col sm="12" class="text-sm-right">
+          <b-button
+              class="mt-1"
+              @click="saveAsset"
+              style="margin-right: 10px">저장</b-button>
+            <b-button
+                class="mt-1"
+                @click="$bvModal.hide('modal-lg')">취소</b-button>
           </b-col>
         </b-row>
-
-        <b-row class="mt-1">
-          <b-col sm="3" class="text-sm-left"><b>당기말장부가액 </b></b-col>
-          <b-col sm="9">
-            <b-form-input></b-form-input>
-          </b-col>
-        </b-row>
-
-
       </b-container>
-      <b-button
-        class="mt-3"
-        @click="$bvModal.hide('modal-lg')"
-        style="margin-right: 10px">저장</b-button>
-      <b-button
-        class="mt-3"
-        @click="$bvModal.hide('modal-lg')">취소</b-button>
     </b-modal>
   </div>
 </template>
 
 <script>
-import textStyle from "echarts/src/model/mixin/textStyle";
+
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+import {saveAsset} from "@/api/account/base";
+
+
+
 
 export default {
   name: 'inputAsset',
   computed: {
-    textStyle() {
-      return textStyle
-    }
+
   },
   data() {
     return {
+      selected: null,
+    options : [
+        { value :'미상각' , text :'미상각' }, { value : '진행',text: '진행' }, { value :'마감', text : '마감' }
+    ],
+    asset: {
+      assetCode: '',
+      acctCode: '',
+      acctName: '',
+      assetName: '',
       progress: '',
-
+      finalizeStatus: 'null',
+      workplace: '',
+      department: '',
+      usefullife: '',
+      acqQuantity: '',
+      chanQuantity: '',
+      remanQuantity: '',
+      amorWay: '',
+      acqCost: '',
+      residValue: '',
+      amorRate: '',
+      month: '',
+      amorFinYear: '',
+      depExpense: ''
+    }
     }
   },
+  methods : {
+    ...mapActions('account/base', ['SAVE_ASSET']),
+
+    async saveAsset() {
+      if(this.asset === '') {
+        console.log('데이터 값을 입력하세요' )
+      } else {
+        this.$store.dispatch('account/base/SAVE_ASSET', this.asset)
+        this.$bvModal.hide('modal-lg');
+      }
+    },
+
+    calculate1(){
+      this.asset.amorRate = 1/this.asset.usefullife;
+      console.log( "cal1"+  this.asset.amorRate)
+
+      this.asset.depExpense =  this.asset.acqCost / this.asset.usefullife;
+      console.log( "cal2"+  this.asset.amorRate)
+    },
+    calculate2(){
+      this.asset.remanQuantity = this.asset.acqQuantity - this.asset.chanQuantity
+    },
+    calculate3(){
+      console.log( "cal3"+ this.asset.progress)
+      const value = this.asset.progress.slice(5,7)
+      console.log( "calTest"+ value)
+      this.asset.month = 12 - value
+    }
+  },
+
+  //
+
 }
 </script>
 

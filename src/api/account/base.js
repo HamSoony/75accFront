@@ -50,6 +50,17 @@ function fetchFindAssetName(assetName) {
 function fetchAssetCodeList() {
     return accountApi.get(`${ACCOUNT_CODE_URL}`)
 }
+/**
+ * 자산 등록
+ * @param newAsset
+ * @returns {*}
+ */
+function saveAsset(data){
+    console.log("api  : ")
+    console.log( 'NEW :'+ data)
+    return accountApi.post('/currentAsset/saveAsset', data)
+}
+
 
 
 /**
@@ -172,6 +183,7 @@ export {
     deleteCustomerCode,
     saveCustomer,
     fetchAssetCodeList,
+    saveAsset,
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,
     fetchFindAssetName,
