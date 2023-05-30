@@ -28,7 +28,10 @@
       >
 
         <template #cell(acctInnerCode)="data">
-          <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'accountCode'" type="text" v-model="newJournalForm[data.index].acctInnerCode" @blur="editCellBlur(data)" ></b-form-input>
+          <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'accountCode'"
+                        type="text"
+                        v-model="newJournalForm[data.index].acctInnerCode"
+                        @blur="editCellBlur(data)" ></b-form-input>
           <span v-else v-b-modal.cellAccountCode @click="setEditIndex(data.index)">{{data.value}}</span>
         </template>
         <template #cell(balanceDivision)="data">

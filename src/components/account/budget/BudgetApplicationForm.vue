@@ -1,7 +1,7 @@
 <template>
   <div style="font-family: 'Franklin Gothic Demi'">
     <div class="custom-search">
-  <h1>예산신청입력</h1>
+  <h1>예산신청</h1>
       <b-row>
         <b-col md="4">
           <b-form-group>
@@ -426,9 +426,11 @@ export default {
     },
     // 저장버튼
     async saveBudget(){
-      const year = new Date(this.searchDate).getFullYear();
-      const lastDigit = parseInt(year.toString().slice(-1));
-      const acctPeriodNo = lastDigit + 1;
+      const year = new Date(this.searchDate).getFullYear()
+      const lastDigit = parseInt(year.toString().slice(-1))
+      const acctPeriodNo = lastDigit + 2
+
+      const budgetingCode = 1
 
       const workplaceCode = sessionStorage.getItem("WorkplaceCode")
       const deptCode = this.deptCode
@@ -447,7 +449,7 @@ export default {
       const m11Budget = this.november
       const m12Budget = this.december
 
-      const saveBudgetDate = {acctPeriodNo, workplaceCode, deptCode, acctInnerCode,
+      const saveBudgetDate = {acctPeriodNo, workplaceCode, deptCode, acctInnerCode, budgetingCode,
         m1Budget, m2Budget, m3Budget, m4Budget, m5Budget, m6Budget, m7Budget, m8Budget, m9Budget
       , m10Budget, m11Budget, m12Budget}
       console.log(saveBudgetDate)
