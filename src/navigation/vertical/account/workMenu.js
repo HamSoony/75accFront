@@ -121,8 +121,13 @@ export default [
     icon: 'MonitorIcon',
     children: [
       {
-        title: '예산신청입력',
+        title: '예산신청',
         route: { name: 'BudgetApplicationPage' },
+        icon: 'FileIcon',
+      },
+      {
+        title: '예산편성',
+        route: { name: 'BudgetingPage'},
         icon: 'FileIcon',
       },
     ],

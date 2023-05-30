@@ -20,8 +20,8 @@ export default {
     async FETCH_CURRENTBUDGET_LIST({ commit },saveBudgetDate ){
         try {
             console.log(saveBudgetDate)
-            await fetchsaveBudget(saveBudgetDate)
-
+            const response = await fetchsaveBudget(saveBudgetDate)
+            return response
         } catch (err) {
             throw new Error(err)
         }
