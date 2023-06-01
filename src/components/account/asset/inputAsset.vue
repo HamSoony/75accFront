@@ -42,11 +42,16 @@
           <b-row class="mt-1">
             <b-col sm="2" class="text-sm-left"><b>자산분류코드 </b></b-col>
             <b-col sm="4">
-              <b-form-input v-model="asset.acctCode"></b-form-input>
+              <b-form-input
+                  id="assetTypeCode"
+                  v-model:value="asset.acctCode"
+                  @click="showAssetCodeModal"/>
             </b-col>
             <b-col sm="2" class="text-sm-left"><b>자산분류명 </b></b-col>
             <b-col sm="4">
-              <b-form-input v-model="asset.acctName"></b-form-input>
+              <b-form-input
+                  v-model:value="asset.acctName"
+                  @click="showAssetCodeModal"/>
             </b-col>
           </b-row>
 
@@ -177,13 +182,26 @@
         id="DepartmentModal"
         v-model="DepartmentModalState"
         ref="departmentModal"
-        title="거래처코드"
+        title="부서코드"
     >
       <p class="my-5">
         <DepartmentModal
-            v-model:value="departmentSelectedData"
+            v-model:value="asset.department"
             @input="DepartmentModalRowClick"
+        />
+      </p>
+    </b-modal>
 
+    <b-modal
+        id="AssetCodeModal"
+        v-model="AssetCodeModalState"
+        ref="assetCodeModal"
+        title="자산분류코드"
+    >
+      <p class="my-5">
+        <AssetCodeModal
+            v-model:value="asset.acctCode"
+            @input="AssetCodeModalRowClick"
         />
       </p>
     </b-modal>
@@ -195,14 +213,10 @@
 
 <script>
 
-import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
-import {saveAsset} from "@/api/account/base";
+import {mapActions, mapState} from "vuex";
 import {BTable} from "bootstrap-vue";
-import MenuSlipForm from "@/components/account/account/Slip/MenuSlipForm.vue";
-import InputForm from "@/components/account/account/Slip/InputForm.vue";
-import AccountCodeModal2 from "@/components/account/modal/AccountCodeModal2.vue";
-import AccountCustomerCodeModal2 from "@/components/account/modal/AccountCustomerCodeModal2.vue";
 import DepartmentModal from "@/components/account/modal/DepartmentModal.vue";
+import AssetCodeModal from "@/components/account/modal/AssetCodeModal.vue";
 
 
 export default {
@@ -214,8 +228,8 @@ export default {
         {value: '미상각', text: '미상각'}, {value: '진행', text: '진행'}, {value: '마감', text: '마감'}
       ],
       workPlaceModal: false,
-
       DepartmentModalState: false,
+      AssetCodeModalState:false,
       project: [
         { key: 'id', label: '코드' },
         { key: 'wpName', label: '이름' },
@@ -245,17 +259,20 @@ export default {
   },
   computed: {
     ...mapState('auth', ['workplaceList']),
+
   },
   components: {
+    AssetCodeModal,
     DepartmentModal
   },
 
   created() {
     this.GET_WORKPLACE_CODE(sessionStorage.getItem('CompanyCode'))
+
   },
 
   methods: {
-    ...mapActions('account/base', ['SAVE_ASSET']),
+    ...mapActions('account/base', ['SAVE_ASSET','FETCH_ASSET_CODE']),
     ...mapActions('auth', ['GET_WORKPLACE_CODE']),
 
 
@@ -269,9 +286,7 @@ export default {
         this.$bvModal.hide('modal-lg');
       }
     },
-    searchDepartment() {
-      console.log(this.departmentList.deptName);
-    },
+
     calculate1() {
       this.asset.amorRate = 1 / this.asset.usefullife;
       console.log("cal1" + this.asset.amorRate)
@@ -307,6 +322,15 @@ export default {
 
     DepartmentModalRowClick(payload) {
       this.asset.department=payload.deptName
+    },
+
+    showAssetCodeModal(){
+      this.AssetCodeModalState = true;
+    },
+
+    AssetCodeModalRowClick(payload){
+      this.asset.acctCode=payload.acctCode
+      this.asset.acctName=payload.acctName
     }
   },
 

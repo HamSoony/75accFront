@@ -51,6 +51,14 @@ function fetchAssetCodeList() {
     return accountApi.get(`${ACCOUNT_CODE_URL}`)
 }
 /**
+ * 자산분류코드 전체조회
+ * @param assetTypeCode
+ * @returns {*}
+ */
+function fetchAssetTypeCode() {
+    return accountApi.get("/currentAsset/assetTypeCode")
+}
+/**
  * 자산 등록
  * @param newAsset
  * @returns {*}
@@ -193,6 +201,7 @@ export {
     searchCustomerInfoList,
     deleteCustomerCode,
     saveCustomer,
+    fetchAssetTypeCode,
     fetchAssetCodeList,
     saveAsset,
     fetchCurrentAssetList,

@@ -2,10 +2,14 @@ export default {
 
 
   // 자산분류코드 리스트
-  SET_ASSET_CODE_LIST(state, accountCodeList) {
-    state.accountCodeList = accountCodeList
-    const assetCodeList = state.accountCodeList;
-
+  SET_ASSET_TYPE_CODE(state, data) {
+    let assetTypeCodeList = [];
+    for(const code of data){
+      const {acctCode,acctName} = code
+      assetTypeCodeList.push({acctCode,acctName})
+    }
+    state.assetTypeCodeList = assetTypeCodeList
+    console.log(state.assetTypeCodeList)
   },
 
 

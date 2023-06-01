@@ -20,7 +20,7 @@
         select-mode="single"
         selectable
         :fields="fields"
-        :items="accountList"
+        :items="assetTypeCodeList"
         :filter="searchAccountCode"
         @row-selected="onRowSelected"
     />
@@ -33,6 +33,7 @@ import { BButton, BFormInput, BTable } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { mapActions, mapMutations, mapState } from 'vuex'
 import Vue from 'vue'
+import {fetchAccountCodeList} from "@/api/account/base";
 
 export default {
   components: {
@@ -49,23 +50,18 @@ export default {
     return {
       searchAccountCode: '',
       searchAccountName: '',
-      fields: ['acctInnerCode', 'acctName'],
-      value: {}
+      fields: ['acctCode', 'acctName'],
+      value: {},
+
     }
   },
 
   computed: {
-    ...mapState('account/base', ['accountList']),
-    assetList() {
-      const startIndex = 2;
-      const endIndex = 6;
-      const newList = this.accountList.slice(startIndex, endIndex);
-      return newList;
-      console.log("assetList :" + assetList);
-    }
-},
+    ...mapState('account/base', ['accountList', 'assetTypeCodeList']),
+  },
   created() {
-    this.FETCH_ASSET_CODE_LIST();
+    this.FETCH_ACCOUNT_CODE_LIST(),
+        this.FETCH_ASSET_TYPE_CODE()
   },
 
   // 모달창이 없어질떄 호출
@@ -74,34 +70,27 @@ export default {
   },
   methods: {
     ...mapMutations('account/base', ['CLEAR_CODE_LIST']),
-    ...mapActions('account/base', ['FETCH_ACCOUNT_CODE',
-      'FETCH_ACCOUNT_CODE_LIST']),
+    ...mapActions('account/base',
+        ['FETCH_ACCOUNT_CODE','FETCH_ACCOUNT_CODE_LIST','FETCH_ASSET_TYPE_CODE']),
 
     // 검색버튼
     searchCode() {
-        if (this.searchAccountCode === '') {
-          Vue.$toast.info('검색어를 입력해주세요')
+      if (this.searchAccountCode === '') {
+        Vue.$toast.info('검색어를 입력해주세요')
 
-          return
-        }
-        const searchCode = {
-          accountCode: this.searchAccountCode,
-          accountName: this.searchAccountCode,
-        }
-        this.FETCH_ACCOUNT_CODE(searchCode)
+        return
+      }
+      const searchCode = {
+        acctCode: this.searchAccountCode,
+        acctName: this.searchAccountCode,
+      }
+      this.FETCH_ASSET_TYPE_CODE(searchCode)
     },
     // 선택된 로우
     onRowSelected(selectedItem) {
-      // if (this.condition === 'accountCode') {
-      //   const { accountCode } = selectedItem[0]
-      //   this.$emit('input', accountCode)
-      //   const { accountName } = selectedItem[0]
-      //   this.$emit('input', accountName)
-      // }
-      console.log(selectedItem)
-      const { acctInnerCode,acctName } = selectedItem[0]
-      this.value = { acctInnerCode,acctName }
-      this.$emit('input', this.value.acctInnerCode)
+      const { acctCode, acctName } = selectedItem[0]
+      this.value = { acctCode, acctName }
+      this.$emit('input', this.value)
     },
 
   },
