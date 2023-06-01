@@ -13,8 +13,7 @@ export default {
     generalAccountLedgerList: [],
     customerList: [],
     id:'',
-
-    assetCodeList: [],
+    assetTypeCodeList: [],
     findAssetName: [],
     findCurrentAssetList:[],
     findAssetByCodeList:[],
@@ -68,6 +67,11 @@ export default {
       //assetCodeList.shift()
       //assetCodeList.unshift({ value: null, text: '계정과목을 선택해주세요' })
       return assetCodeList
+    },
+
+    GET_ASSET_TYPE_CODE(state) {
+      const assetTypeCode = state.assetTypeCode
+      return assetTypeCode
     },
 
     GET_CURRENT_ASSET_LIST(state) {

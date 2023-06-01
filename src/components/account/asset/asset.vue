@@ -1,66 +1,66 @@
 <template>
   <div>
     <b-container style="padding: 20px; ">
-    <b-row>
-      <b-col sm="1" style="padding-bottom: 10px"><b>자산코드</b></b-col>
-      <b-col sm="3" style="padding-bottom: 10px">
-        <b-form-input
-            v-model="assetCode"
-            placeholder="Search"
-            type="text"
-            class="d-inline-block"
-            style="font-size:1rem; font-weight: bold"
-            @input="advanceSearch1"
-        />
-      </b-col>
-
-      <b-col cols="1" style="padding-bottom: 10px"><b>자산명</b></b-col>
-      <b-col cols="3" style="padding-bottom: 10px">
-        <b-form-input
-            v-model="assetName"
-            placeholder="Search"
-            type="text"
-            class="d-inline-block"
-            style="font-size:1rem; font-weight: bold"
-            @keyup.enter="searchAssetName"
-        />
-      </b-col>
-    </b-row>
-
-    <b-row >
-      <b-col cols="1"><b>자산분류코드</b></b-col>
-      <b-col cols="3">
-        <b-form-group>
+      <b-row>
+        <b-col sm="1" style="padding-bottom: 10px"><b>자산코드</b></b-col>
+        <b-col sm="3" style="padding-bottom: 10px">
           <b-form-input
-              v-model="accountCode"
+              v-model="assetCode"
               placeholder="Search"
               type="text"
               class="d-inline-block"
               style="font-size:1rem; font-weight: bold"
-              @click="searchAccountCode"
-          >
-          </b-form-input>
-        </b-form-group>
-      </b-col>
-
-      <b-col cols="1"><b>취득일자</b></b-col>
-      <b-col cols="3">
-        <b-form-group>
-          <b-form-input
-              v-model="progress"
-              placeholder="Search"
-              type="date"
-              class="d-inline-block"
-              style="font-size:1rem; "
+              @input="advanceSearch1"
           />
-        </b-form-group>
-      </b-col>
+        </b-col>
 
-      <b-col cols="2">
-        <inputAsset/>
-      </b-col>
+        <b-col cols="1" style="padding-bottom: 10px"><b>자산명</b></b-col>
+        <b-col cols="3" style="padding-bottom: 10px">
+          <b-form-input
+              v-model="assetName"
+              placeholder="Search"
+              type="text"
+              class="d-inline-block"
+              style="font-size:1rem; font-weight: bold"
+              @keyup.enter="searchAssetName"
+          />
+        </b-col>
+      </b-row>
 
-    </b-row>
+      <b-row >
+        <b-col cols="1"><b>자산분류코드</b></b-col>
+        <b-col cols="3">
+          <b-form-group>
+            <b-form-input
+                v-model="accountCode"
+                placeholder="Search"
+                type="text"
+                class="d-inline-block"
+                style="font-size:1rem; font-weight: bold"
+                @click="searchAccountCode"
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-col>
+
+        <b-col cols="1"><b>취득일자</b></b-col>
+        <b-col cols="3">
+          <b-form-group>
+            <b-form-input
+                v-model="progress"
+                placeholder="Search"
+                type="date"
+                class="d-inline-block"
+                style="font-size:1rem; "
+            />
+          </b-form-group>
+        </b-col>
+
+        <b-col cols="2">
+          <inputAsset/>
+        </b-col>
+
+      </b-row>
     </b-container>
 
     <div>
@@ -161,7 +161,6 @@
               </b-col>
             </b-row>
 
-
             <b-row class="my-1">
               <b-col sm="2" class="text-sm-left" style="font-size: 1.1rem;"><b>| 당기말상각누계액</b></b-col>
               <b-col sm="4">
@@ -221,17 +220,7 @@ export default {
       selected: null,
       accountCodeList: [],
       fields: ['acctInnerCode', 'acctName'],
-      dpts: {
-        'administration': '총무부',
-        'sales': '영업부',
-        'Production': '생산부',
-        'Procurement ': '구매부',
-        'Human Resources ': '인사부',
-        'Development ': '개발부',
-        'Planning': '기획부',
-        'Public Relations': '홍보부',
-        'Technical ': '기술부'
-      },
+
       columns2: [
         {'assetCode': '자산코드'},
         {'acctCode': '자산분류코드'},
@@ -302,11 +291,9 @@ export default {
     /**
      * 이렇게 변수에 할당해서 사용한다면 위의 data에 선언필요 x
      */
-    ...mapState('account/base',
-        ['findCurrentAssetList',
-          'accountLederList',
-        ]),
+    ...mapState('account/base', ['findCurrentAssetList', 'accountLederList']),
 
+    ...mapState('logi/base', ['workplaceList', 'deptList']),
     ...mapGetters('account/base',
         ['GET_CURRENT_ASSET_LIST',
           'GET_ASSET_CODE_LIST',
@@ -355,6 +342,7 @@ export default {
 
     searchAccountCode() {
       this.$root.$emit('bv::show::modal', 'accountCode', '#focusThisOnClose')
+      console.log("accountLederList" + this.accountLederList)
     },
 
     advanceSearch1(){
