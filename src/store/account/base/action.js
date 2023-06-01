@@ -8,10 +8,9 @@ import {
   deleteAccountCode,
   addAccountCode, searchCustomerInfoList, deleteCustomerCode,
   saveCustomer,
-  fetchAssetCodeList,
+  fetchAssetTypeCode,
   fetchCurrentAssetList,
   saveAsset,
-  fetchFindAssetByCodeList,
   fetchFindAssetName,
 } from '@/api/account/base'
 
@@ -32,16 +31,16 @@ export default {
       throw new Error(err)
     }
   },
-  // async FETCH_ASSET_CODE_LIST({ commit }) {
-  //   try {
-  //     const { data } = await fetchAssetCodeList()
-  //     commit('SET_ASSET_CODE_LIST', data.accountCodeList)
-  //     console.log( "Test : " + data)
-  //     return data
-  //   } catch (err) {
-  //     throw new Error(err)
-  //   }
-  // },
+  async FETCH_ASSET_TYPE_CODE({ commit }) {
+    try {
+      const { data } = await fetchAssetTypeCode()
+      commit('SET_ASSET_TYPE_CODE', data)
+      console.log(data)
+      return data
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
 
   async FETCH_CURRENT_ASSET_LIST({ commit }) {
     try {

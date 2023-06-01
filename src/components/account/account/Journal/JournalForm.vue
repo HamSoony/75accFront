@@ -50,16 +50,15 @@
           <span v-else @click="editCellHandler(data, 'rightCreditsPrice')">{{data.value}}</span>
         </template>
 
-
-
       </b-table>
 
       <h1>분개상세 </h1>
 
       <b-row>
         프로젝트
-        <b-col md="1" ><input type="text" v-model:value="newJournalDetailForm.wpCode" @click="showWorkPlaceModal" /></b-col>
-        <b-col md="2"><input size="10" type="text" v-model:value="newJournalDetailForm.wpName" @click="showWorkPlaceModal" /></b-col>
+
+        <b-col md="2" ><input type="text" v-model:value="newJournalDetailForm.wpCode" @click="showWorkPlaceModal" /></b-col>
+        <b-col md="4"><input size="10" type="text" v-model:value="newJournalDetailForm.wpName" @click="showWorkPlaceModal" /></b-col>
         사용부서
         <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.deptCode" @click="showDepartmentModal" /></b-col>
         <b-col md="3"><input type="text" v-model:value="newJournalDetailForm.deptName" @click="showDepartmentModal" /></b-col>
@@ -281,8 +280,8 @@ export default {
       project: [
         { key: 'id', label: '코드' },
         { key: 'wpName', label: '이름' },
-      ]
-      ,
+      ],
+
       selectedJournal: [],
 
       detailDisabled:true,

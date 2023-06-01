@@ -12,8 +12,7 @@ export default {
     generalAccountLedgerList: [],
     customerList: [],
     id:'',
-
-    assetCodeList: [],
+    assetTypeCodeList: [],
     findAssetName: [],
     findCurrentAssetList:[],
     findAssetByCodeList:[],
@@ -54,18 +53,23 @@ export default {
       return rootList
     },
 
-    GET_ASSET_CODE_LIST(state) {
+    // GET_ASSET_CODE(state) {
       // const assetCodeList = state.assetCodeList.filter(value => value.leaf === '0')
       //     .map(v => ({ value: v, text: v.acctName }))
 
-      const assetCodeList = [];
-      for (const asset of state.assetCodeList){
-        assetCodeList.push(asset.acctName)
-      }
-      console.log("TEST : " + assetCodeList)
+      // const assetCode = [];
+      // for (const asset of state.assetCode){
+      //   assetCode.push(asset.acctName)
+      // }
+      // console.log("TEST : " + assetCode)
       //assetCodeList.shift()
       //assetCodeList.unshift({ value: null, text: '계정과목을 선택해주세요' })
-      return assetCodeList
+      // return assetCode
+    // },
+
+    GET_ASSET_TYPE_CODE(state) {
+      const assetTypeCode = state.assetTypeCode
+      return assetTypeCode
     },
 
     GET_CURRENT_ASSET_LIST(state) {

@@ -102,7 +102,7 @@ export default {
     // 테이블 선택한 아이템 가져오기
     onRowSelected(selectedItem) {
 
-      console.log("deptdata",selectedItem)
+      console.log("deptdata :" + selectedItem)
       const { deptCode,deptName } = selectedItem.row
       this.value = { deptCode,deptName }
       console.log("this.value",this.value)

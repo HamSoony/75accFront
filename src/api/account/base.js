@@ -43,13 +43,14 @@ function fetchFindAssetName(assetName) {
 }
 
 /**
- * 자산코드 전체조회
- * @param assetCode
+ * 자산분류코드 전체조회
+ * @param assetTypeCode
  * @returns {*}
  */
-function fetchAssetCodeList() {
-    return accountApi.get(`${ACCOUNT_CODE_URL}`)
+function fetchAssetTypeCode() {
+    return accountApi.get("/currentAsset/assetTypeCode")
 }
+
 /**
  * 자산 등록
  * @param newAsset
@@ -181,8 +182,8 @@ export {
     addAccountCode,
     searchCustomerInfoList,
     deleteCustomerCode,
+    fetchAssetTypeCode,
     saveCustomer,
-    fetchAssetCodeList,
     saveAsset,
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,

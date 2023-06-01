@@ -220,17 +220,7 @@ export default {
       selected: null,
       accountCodeList: [],
       fields: ['acctInnerCode', 'acctName'],
-      dpts: {
-        'administration': '총무부',
-        'sales': '영업부',
-        'Production': '생산부',
-        'Procurement ': '구매부',
-        'Human Resources ': '인사부',
-        'Development ': '개발부',
-        'Planning': '기획부',
-        'Public Relations': '홍보부',
-        'Technical ': '기술부'
-      },
+
       columns2: [
         {'assetCode': '자산코드'},
         {'acctCode': '자산분류코드'},
@@ -301,11 +291,9 @@ export default {
     /**
      * 이렇게 변수에 할당해서 사용한다면 위의 data에 선언필요 x
      */
-    ...mapState('account/base',
-        ['findCurrentAssetList',
-          'accountLederList',
-        ]),
+    ...mapState('account/base', ['findCurrentAssetList', 'accountLederList']),
 
+    ...mapState('logi/base', ['workplaceList', 'deptList']),
     ...mapGetters('account/base',
         ['GET_CURRENT_ASSET_LIST',
           'GET_ASSET_CODE_LIST',
@@ -354,6 +342,7 @@ export default {
 
     searchAccountCode() {
       this.$root.$emit('bv::show::modal', 'accountCode', '#focusThisOnClose')
+      console.log("accountLederList" + this.accountLederList)
     },
 
     advanceSearch1(){
