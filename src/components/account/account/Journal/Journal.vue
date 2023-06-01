@@ -228,6 +228,24 @@ export default {
 
     },
 
+    JournalClicked(item, index) {
+      console.log("item", item)
+      this.dataIndex = index
+      this.selectedJournal = item
+      this.newJournalDetailForm.wpCode = item.journalDetail.wpCode
+      this.newJournalDetailForm.wpName = item.journalDetail.wpName
+      this.newJournalDetailForm.deptCode = item.journalDetail.deptCode
+      this.newJournalDetailForm.deptName = item.journalDetail.deptName
+      if (item.acctName.includes("현금")) {
+        this.JournalDetailConditions = "현금"
+
+      } else if (item.acctName.includes("보험")) {
+        this.JournalDetailConditions = "업무용승용차"
+      }
+      console.log("JournalClicked", this.selectedJournal)
+
+    }
+
   },
 }
 </script>
