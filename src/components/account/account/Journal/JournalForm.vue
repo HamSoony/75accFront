@@ -1,129 +1,402 @@
 <template>
   <div>
-    <div>
-      <MenuSlipForm
-          style="justify-content: end"
-          :active-button="activeButton"
-          :add-bt-status="addBtStatus"
-          :add-journal-bt="addJournalBt"
-          :saveBt="saveBt"
-          @submitResult="submit"
-      />
-
-      <h1>전표</h1>
-      <b-table
-          :items="newSlipForm"
-          :fields="slipFiled"
-      >
-      </b-table>
-      <h1>분개 </h1>
-      <b-table
-          :items="newJournalForm"
-          :fields="journalFiled"
-          striped
-          responsive
-          selectable
-          select-mode="single"
-          @row-clicked="JournalClicked"
-      >
-
-        <template #cell(acctInnerCode)="data">
-          <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'accountCode'"
-                        type="text"
-                        v-model="newJournalForm[data.index].acctInnerCode"
-                        @blur="editCellBlur(data)" ></b-form-input>
-          <span v-else v-b-modal.cellAccountCode @click="setEditIndex(data.index)">{{data.value}}</span>
-        </template>
-        <template #cell(balanceDivision)="data">
-          <b-form-select v-if="newJournalForm[data.index].isEdit && selectedCell === 'balanceDivision'" type="text" v-model="newJournalForm[data.index].balanceDivision" @change="editCellBlur(data)">
-            <option v-for="option in options" :value="option.value">{{option.text}}</option>
-          </b-form-select>
-          <span v-else @click="editCellHandler(data, 'balanceDivision')">{{data.value}}</span>
-        </template>
-        <template #cell(cterCode)="data">
-          <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'customerCode'" type="text" v-model="newJournalForm[data.index].cterCode" @blur="editCellBlur(data)" ></b-form-input>
-          <span v-else v-b-modal.CustomerCode2 @click="setEditIndex(data.index)">{{data.value}}</span>
-        </template>
-        <template #cell(leftDebtorPrice)="data">
-          <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'leftDebtorPrice'" type="text" v-model="newJournalForm[data.index].leftDebtorPrice" @blur="editCellBlur(data)" ></b-form-input>
-          <span v-else @click="editCellHandler(data, 'leftDebtorPrice')">{{data.value}}</span>
-        </template>
-        <template #cell(rightCreditsPrice)="data">
-          <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'rightCreditsPrice'" type="text" v-model="newJournalForm[data.index].rightCreditsPrice" @blur="editCellBlur(data)" ></b-form-input>
-          <span v-else @click="editCellHandler(data, 'rightCreditsPrice')">{{data.value}}</span>
-        </template>
-
-
-
-      </b-table>
-
-      <h1>분개상세 </h1>
-
-      <b-row>
-        프로젝트
-        <b-col md="1" ><input type="text" v-model:value="newJournalDetailForm.wpCode" @click="showWorkPlaceModal" /></b-col>
-        <b-col md="2"><input size="10" type="text" v-model:value="newJournalDetailForm.wpName" @click="showWorkPlaceModal" /></b-col>
-        사용부서
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.deptCode" @click="showDepartmentModal" /></b-col>
-        <b-col md="3"><input type="text" v-model:value="newJournalDetailForm.deptName" @click="showDepartmentModal" /></b-col>
-        관리번호
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-      </b-row>
-
-      <b-row class="mt-1">
-        요청일
-        <b-col md="2" ><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        상환일
-        <b-col md="2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        환종
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        <b-col md="2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        환율
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-      </b-row>
-
-      <b-row class="mt-1">
-        외화금액
-        <b-col md="2" ><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        관리율
-        <b-col md="2"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        사용자정의
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        <b-col md="1"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        사용자정의
-        <b-col md="1"><input type="text" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-        <b-col md="1"><input type="text" size="10" v-model:value="newJournalDetailForm.accountControlName" :disabled="detailDisabled" /></b-col>
-      </b-row>
-
-      <div />
-
-    </div>
-
-    <div>
-      <h1> 총 합 </h1>
-      <b-row>
-        <b-col>
-          <b-table :items="leftJournalList"
-                   :fields="totalLeftForm"
-                   striped
-                   responsive
-                   v-model=leftJournalList
-
+    <table class="table table-row-spacing">
+      <thead>
+      <tr>
+        <th>
+          <MenuSlipForm
+              style="justify-content: end"
+              :active-button="activeButton"
+              :add-bt-status="addBtStatus"
+              :add-journal-bt="addJournalBt"
+              :saveBt="saveBt"
+              @submitResult="submit"
           />
-        </b-col>
-        <b-col>
+        </th>
+      </tr>
+      </thead>
+
+      <tbody >
+      <tr>
+        <td>
+          <h1><b>전표</b></h1>
           <b-table
-              :items="rightJournalList"
-              :fields="totalRightForm"
+              :items="newSlipForm"
+              :fields="slipFiled"
+              striped
+          >
+          </b-table>
+
+          <h1><b>분개</b> </h1>
+          <b-table
+              :items="newJournalForm"
+              :fields="journalFiled"
               striped
               responsive
-              v-model=rightJournalList
-          />
-        </b-col>
-      </b-row>
+              selectable
+              select-mode="single"
+              @row-clicked="JournalClicked"
+          >
 
-    </div>
+            <template #cell(acctInnerCode)="data">
+              <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'accountCode'" type="text"
+                            v-model="newJournalForm[data.index].acctInnerCode"
+                            @blur="editCellBlur(data)"></b-form-input>
+              <span v-else v-b-modal.cellAccountCode @click="setEditIndex(data.index)">{{ data.value }}</span>
+            </template>
+            <template #cell(balanceDivision)="data">
+              <b-form-select v-if="newJournalForm[data.index].isEdit && selectedCell === 'balanceDivision'" type="text"
+                             v-model="newJournalForm[data.index].balanceDivision" @change="editCellBlur(data)">
+                <option v-for="option in options" :value="option.value">{{ option.text }}</option>
+              </b-form-select>
+              <span v-else @click="editCellHandler(data, 'balanceDivision')">{{ data.value }}</span>
+            </template>
+            <template #cell(cterCode)="data">
+              <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'customerCode'" type="text"
+                            v-model="newJournalForm[data.index].cterCode" @blur="editCellBlur(data)"></b-form-input>
+              <span v-else v-b-modal.CustomerCode2 @click="setEditIndex(data.index)">{{ data.value }}</span>
+            </template>
+            <template #cell(leftDebtorPrice)="data">
+              <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'leftDebtorPrice'" type="text"
+                            v-model="newJournalForm[data.index].leftDebtorPrice"
+                            @blur="editCellBlur(data)"></b-form-input>
+              <span v-else @click="editCellHandler(data, 'leftDebtorPrice')">{{ data.value }}</span>
+            </template>
+            <template #cell(rightCreditsPrice)="data">
+              <b-form-input v-if="newJournalForm[data.index].isEdit && selectedCell === 'rightCreditsPrice'" type="text"
+                            v-model="newJournalForm[data.index].rightCreditsPrice"
+                            @blur="editCellBlur(data)"></b-form-input>
+              <span v-else @click="editCellHandler(data, 'rightCreditsPrice')">{{ data.value }}</span>
+            </template>
 
+          </b-table>
+
+        </td>
+      </tr>
+
+
+      <!--현금 관련--->
+      <tr v-if="JournalDetailConditions===`현금`">
+        <td>
+          <h1>분개상세 </h1>
+          <b-container fluid="sm">
+            <b-form>
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>프로젝트</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.wpCode"
+                        @click="showWorkPlaceModal"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.wpName"
+                        @click="showWorkPlaceModal"/>
+                  </div>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>자금과목</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.deptCode"
+                        @click="showDepartmentModal"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.deptName"
+                        @click="showWorkPlaceModal"/>
+                  </div>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>환종</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                  </div>
+                </b-col>
+
+              </b-row>
+
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>품번</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>요청일</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>상환일</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+              </b-row>
+
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>환율</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+                <b-col sm="1" class="text-sm-right"><b>외화금액</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+                <b-col sm="1" class="text-sm-right"><b>이자율</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+              </b-row>
+
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>사용자정의</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                  </div>
+                </b-col>
+                <b-col sm="1" class="text-sm-right"><b>사용자정의</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                  </div>
+                </b-col>
+
+              </b-row>
+
+            </b-form>
+          </b-container>
+        </td>
+      </tr>
+
+      <!--업무용 승합차-->
+      <tr v-if="JournalDetailConditions===`업무용승용차`">
+        <td>
+          <h1>분개상세 </h1>
+          <b-container fluid="sm">
+            <b-form>
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>프로젝트</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.wpCode"
+                        @click="showWorkPlaceModal"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.wpName"
+                        @click="showWorkPlaceModal"/>
+                  </div>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>사용부서</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.deptCode"
+                        @click="showDepartmentModal"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.deptName"
+                        @click="showWorkPlaceModal"/>
+                  </div>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>환종</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                  </div>
+                </b-col>
+
+              </b-row>
+
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>품번</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>요청일</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+
+                <b-col sm="1" class="text-sm-right"><b>상환일</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+              </b-row>
+
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>환율</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+                <b-col sm="1" class="text-sm-right"><b>외화금액</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+                <b-col sm="1" class="text-sm-right"><b>이자율</b></b-col>
+                <b-col sm="3">
+                  <b-form-input
+                      type="text"
+                      size="10"
+                      v-model:value="newJournalDetailForm.accountControlName"
+                      :disabled="detailDisabled"/>
+                </b-col>
+              </b-row>
+
+              <b-row class="mt-1">
+                <b-col sm="1" class="text-sm-right"><b>업무용차량</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                    />
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                    />
+                  </div>
+                </b-col>
+                <b-col sm="1" class="text-sm-right"><b>사용자정의</b></b-col>
+                <b-col sm="3">
+                  <div style="display: flex">
+                    <b-form-input
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                    <b-form-input
+                        size="10"
+                        type="text"
+                        v-model:value="newJournalDetailForm.accountControlName"
+                        :disabled="detailDisabled"/>
+                  </div>
+                </b-col>
+
+              </b-row>
+
+            </b-form>
+          </b-container>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td>
+
+          <h1><b>총 합</b></h1>
+          <b-row>
+            <b-col>
+              <b-table :items="leftJournalList"
+                       :fields="totalLeftForm"
+                       striped
+                       responsive
+                       v-model=leftJournalList
+
+              />
+            </b-col>
+            <b-col>
+              <b-table
+                  :items="rightJournalList"
+                  :fields="totalRightForm"
+                  striped
+                  responsive
+                  v-model=rightJournalList
+              />
+            </b-col>
+          </b-row>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
 
     <div>
@@ -228,8 +501,6 @@
       </b-modal>
 
 
-
-
     </div>
 
   </div>
@@ -296,6 +567,8 @@ export default {
 
       departmentSelectedData:{},
 
+      JournalDetailConditions: "",
+
       slipFiled : [
         { key: 'acctPeriodNo', label: '기수일련번호' },
         { key: 'id', label: '전표일련번호' },
@@ -316,6 +589,8 @@ export default {
         { key: 'leftDebtorPrice', label: '차변금액' },
         { key: 'rightCreditsPrice', label: '대변금액' },
       ],
+
+
 
 
 
@@ -455,13 +730,13 @@ export default {
      */
     openAlert(SlipNo) {
       this.$swal.fire({
-        title: '전표작성 성공!',
+        title: '전표수정 성공!',
         text: `전표번호${SlipNo}`,
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '해당 전표를 보시겠습니까?',
+        confirmButtonText: '확인',
       }).then(result => {
         if (result.isConfirmed) {
           this.$router.push({name: 'journalForm', params: {selectedSlip: SlipNo}})
@@ -545,6 +820,17 @@ export default {
       this.newJournalDetailForm.deptCode=item.journalDetail.deptCode
       this.newJournalDetailForm.deptName=item.journalDetail.deptName
       console.log("JournalClicked", this.selectedJournal)
+
+      if (item.acctName.includes("현금")) {
+        this.JournalDetailConditions = "현금"
+
+      } else if (item.acctName.includes("보험")) {
+        this.JournalDetailConditions = "업무용승용차"
+      }
+      console.log("JournalClicked", this.selectedJournal)
+
+
+
     }
     ,
 
