@@ -19,18 +19,28 @@ export default {
     findCurrentAssetList.showDetails = false
     state.findCurrentAssetList = findCurrentAssetList
   },
-  // //자산 조회(코드)
-  // SET_FIND_ASSET_BY_CODE_LIST(state,findAssetByCodeList) {
-  //   state.findAssetByCodeList = findAssetByCodeList
-  // },
+
+
   //자산 조회(코드네임)
   SET_FIND_ASSET_NAME(state,findAssetNameList) {
     state.findCurrentAssetList = findAssetNameList
   },
 
-  // SET_ACCOUNT_LEDGER_LIST(state, accountLederList) {
-  //   state.accountLederList = accountLederList
-  // },
+ //자산리스트 조회(부서)
+  SET_FIND_ASSET_BY_DEPARTMENT(state, findAssetByDepartment){
+    state.findCurrentAssetList = findAssetByDepartment
+  },
+
+  //자산리스트 조회(취득일자)
+  SET_FIND_ASSET_BY_PROGRESS(state, findAssetByProgress){
+    state.findCurrentAssetList = findAssetByProgress
+  },
+
+  //자산리스트 조회(자산분류코드)
+  SET_FIND_ASSET_BY_ACCTCODE(state, findAssetByAcctCode){
+    state.findCurrentAssetList = findAssetByAcctCode
+  },
+
   /**
    * 모든계정코드 찾아오기
    * @param state

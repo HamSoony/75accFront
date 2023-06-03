@@ -43,13 +43,50 @@ function fetchFindAssetByNameList(assetName) {
 }
 
 /**
- * 자산코드 전체조회
- * @param assetCode
+ * 부서 (department) 조회
+ * @param
  * @returns {*}
  */
-function fetchAssetCodeList() {
-    return accountApi.get(`${ACCOUNT_CODE_URL}`)
+function fetchFindAssetByDepartment(department) {
+    console.log(department)
+    const data = accountApi.get("/currentAsset/findDepartment", {
+        params:
+        department,
+    })
+    console.log(data)
+    return data
 }
+
+/**
+ * 취득일자 (progress) 조회
+ * @param
+ * @returns {*}
+ */
+function fetchFindAssetByProgress(progress) {
+    console.log(progress)
+    const data = accountApi.get("/currentAsset/findProgress", {
+        params:
+        progress,
+    })
+    console.log(data)
+    return data
+}
+
+/**
+ * 자산분류 코드(acctCode) 조회
+ * @param
+ * @returns {*}
+ */
+function fetchFindAssetByAcctCode(acctCode) {
+    console.log(acctCode)
+    const data = accountApi.get("/currentAsset/findAcctCode", {
+        params:
+        acctCode,
+    })
+    console.log(data)
+    return data
+}
+
 /**
  * 자산분류코드 전체조회
  * @param assetTypeCode
@@ -202,7 +239,9 @@ export {
     deleteCustomerCode,
     saveCustomer,
     fetchAssetTypeCode,
-    fetchAssetCodeList,
+    fetchFindAssetByDepartment,
+    fetchFindAssetByProgress,
+    fetchFindAssetByAcctCode,
     saveAsset,
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,

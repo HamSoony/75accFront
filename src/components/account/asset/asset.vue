@@ -1,16 +1,17 @@
 <template>
   <div>
-    <b-container style="padding: 20px; ">
+    <div style="padding: 20px;">
       <b-row>
-        <b-col sm="1" style="padding-bottom: 10px"><b>자산코드</b></b-col>
+        <b-col sm="1" style="padding-bottom: 10px"><b>관리부서</b></b-col>
         <b-col sm="3" style="padding-bottom: 10px">
           <b-form-input
-              v-model="assetCode"
+              v-model="department"
               placeholder="Search"
               type="text"
               class="d-inline-block"
               style="font-size:1rem; font-weight: bold"
-              @input="advanceSearch1"
+              @click="showDepartmentModal"
+              @keyup.enter="searchDepartment"
           />
         </b-col>
 
@@ -37,7 +38,8 @@
                 type="text"
                 class="d-inline-block"
                 style="font-size:1rem; font-weight: bold"
-                @click="searchAccountCode"
+                @click="showAssetCodeModal"
+                @keyup.enter="searchAcctCode"
             >
             </b-form-input>
           </b-form-group>
@@ -51,7 +53,8 @@
                 placeholder="Search"
                 type="date"
                 class="d-inline-block"
-                style="font-size:1rem; "
+                style="font-size:1rem;"
+                @change="searchProgress"
             />
           </b-form-group>
         </b-col>
@@ -61,12 +64,13 @@
         </b-col>
 
       </b-row>
-    </b-container>
+    </div>
 
     <div>
       <b-table
           :items="findCurrentAssetList"
           :fields="columns2"
+          class="text-sm-center; align-content-center;"
           striped responsive="sm"
 
       >
@@ -183,30 +187,49 @@
         </template>
       </b-table>
     </div>
-    <!-- 계정코드 , 계정명 전용 모달-->
+
+    <!-- 자산분류코드 , 계정명 전용 모달-->
     <b-modal
-        id="accountCode"
-        ref="accountModal"
-        title="계정코드 찾기"
+        id="AssetCodeModal"
+        v-model="AssetCodeModalState"
+        ref="assetCodeModal"
+        title="자산분류코드"
     >
       <p class="my-5">
-        <AccountCodeModal
+        <AssetCodeModal
             v-model:value="accountCode"
-            condition="accountCode"
+            @input="AssetCodeModalRowClick"
         />
       </p>
     </b-modal>
+
+    <!-- 관리부서 전용 모달-->
+    <b-modal
+        id="DepartmentModal"
+        v-model="DepartmentModalState"
+        ref="departmentModal"
+        title="부서코드"
+    >
+      <p class="my-5">
+        <DepartmentModal
+            v-model:value="department"
+            @input="DepartmentModalRowClick"
+        />
+      </p>
+    </b-modal>
+
   </div>
+
 </template>
 
 <script>
 import {VueGoodTable} from 'vue-good-table';
 import {size} from "lodash";
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
-import AccountCodeModal from '../modal/AccountCodeModal'
 import inputAsset from '../asset/inputAsset.vue'
+import AssetCodeModal from "@/components/account/modal/AssetCodeModal.vue";
+import DepartmentModal from "@/components/account/modal/DepartmentModal.vue";
 import Vue from "vue";
-
 
 export default {
   data() {
@@ -215,7 +238,9 @@ export default {
       accountCode: '',
       progress: '',
       assetName: '',
-
+      department:'',
+      AssetCodeModalState:false,
+      DepartmentModalState:false,
       showModal: false,
       selected: null,
       accountCodeList: [],
@@ -232,73 +257,24 @@ export default {
         {'finalizeStatus': '상태'},
         {'showDetails': '상세보기'}
       ],
-      columns: [
-        {
-          label: '자산코드',
-          field: 'assetCode.assetCode',
-          width: '16%',
-          tdClass: 'text-center',
-          thClass: 'text-center',
-        },
-        {
-          label: '자산분류코드',
-          field: 'acctCode',
-          width: '16%',
-          style: 'text-align: center; , font-size: 12px;',
-          tdClass: 'text-center',
-          thClass: 'text-center',
-        },
-        {
-          label: '자산분류명',
-          field: 'acctName',
-          width: '16%',
-          tdClass: 'text-center',
-          thClass: 'text-center',
-        },
-        {
-          label: '자산명',
-          field: 'assetName',
-          width: '16%',
-          tdClass: 'text-center',
-          thClass: 'text-center',
-        },
-        {
-          label: '인수날짜',
-          field: 'progress', // acquisitionDate
-          width: '16%',
-          tdClass: 'text-center',
-          thClass: 'text-center',
-
-        },
-        {
-          label: '상태',
-          field: 'finalizeStatus',
-          width: '16%',
-          tdClass: 'text-center',
-          thClass: 'text-center',
-        }
-      ],
       rows: [],
       searchValue: '',
     };
 
   },
   components: {
-    AccountCodeModal, inputAsset
+    inputAsset, AssetCodeModal, DepartmentModal
 
   },
   computed: {
     /**
      * 이렇게 변수에 할당해서 사용한다면 위의 data에 선언필요 x
      */
-    ...mapState('account/base', ['findCurrentAssetList', 'accountLederList']),
+    ...mapState('account/base', ['findCurrentAssetList']),
 
-    ...mapState('logi/base', ['workplaceList', 'deptList']),
     ...mapGetters('account/base',
         ['GET_CURRENT_ASSET_LIST',
-          'GET_ASSET_CODE_LIST',
           'GET_FIND_ASSET_NAME',
-          'GET_ACCOUNT_LEDER_LIST'
         ]),
 
   },
@@ -308,21 +284,19 @@ export default {
 
   created() {
     this.FETCH_CURRENT_ASSET_LIST()
-
   },
 
   methods: {
     ...mapActions('account/base',
-        ['FETCH_CURRENT_ASSET_LIST',
-          'FETCH_ASSET_CODE_LIST',
-          'FETCH_FIND_ASSET_NAME'
-        ]),
-    ...mapMutations('account/base',
-        ['CLEAR_ACCOUNT_LEDGER_LIST',
-        ]),
+        ['FETCH_CURRENT_ASSET_LIST', 'FETCH_FIND_ASSET_NAME',
+        'FETCH_FIND_ASSET_BY_DEPARTMENT', 'FETCH_FIND_ASSET_BY_PROGRESS',
+        'FETCH_FIND_ASSET_BY_ACCTCODE']),
+
+    ...mapMutations('account/base', ['CLEAR_ACCOUNT_LEDGER_LIST']),
+
     async searchAssetName() {
       if (this.assetName === '') {
-        // Vue.$toast.info('자산명을 입력해주세요')
+        Vue.$toast.info('자산명을 입력해주세요')
         await this.FETCH_CURRENT_ASSET_LIST()
         return
       }
@@ -330,40 +304,77 @@ export default {
         assetName: this.assetName
       }
       await this.FETCH_FIND_ASSET_NAME(assetName)
-      // if (this.assetName === assetName) {
+      // if (this.assetName !== assetName) {
       //   Vue.$toast.info('검색결과가 존재하지 않습니다')
+      //   console.log("payload :" + assetName)
       // }
-      // console.log("Test : " + response.status)
     },
 
-    /**
-     * 계정과목 모달 띄우기
-     */
-
-    searchAccountCode() {
-      this.$root.$emit('bv::show::modal', 'accountCode', '#focusThisOnClose')
-      console.log("accountLederList" + this.accountLederList)
+    async searchDepartment(){
+      if (this.department === '') {
+        Vue.$toast.info('부서명을 입력해주세요')
+        await this.FETCH_CURRENT_ASSET_LIST()
+        return
+      }
+      const department = {
+        department: this.department
+      }
+      await this.FETCH_FIND_ASSET_BY_DEPARTMENT(department)
+      // if (this.assetName !== assetName) {
+      //   Vue.$toast.info('검색결과가 존재하지 않습니다')
+        console.log("payload :" + department)
+      // }
     },
 
-    advanceSearch1(){
+    async searchProgress(){
+      if (this.progress === '') {
+        Vue.$toast.info('취득일자를 입력해주세요')
+        await this.FETCH_CURRENT_ASSET_LIST()
+        return
+      }
+      const progress = {
+        progress: this.progress.replace(/-/g, '')
+      }
+      await this.FETCH_FIND_ASSET_BY_PROGRESS(progress)
+      // if (this.assetName !== assetName) {
+      //   Vue.$toast.info('검색결과가 존재하지 않습니다')
+      //   console.log("payload :" + assetName)
+      // }
+    },
+    async searchAcctCode(){
+      if (this.accountCode === '') {
+        Vue.$toast.info('자산분류코드를 입력해주세요')
+        await this.FETCH_CURRENT_ASSET_LIST()
+        return
+      }
+      const acctCode = {
+        acctCode: this.accountCode
+      }
+      await this.FETCH_FIND_ASSET_BY_ACCTCODE(acctCode)
+      // if (this.assetName !== assetName) {
+      //   Vue.$toast.info('검색결과가 존재하지 않습니다')
+      //   console.log("payload :" + assetName)
+      // }
+    },
 
-    }
-    /**
-     *
-     * 안내문구 클릭시 alert창을 띄워서 처리
-     * 상위항목의 accountInnerCode를 통해  하위항목 계정코드를 찾을수가 있다.
-     * @param value
-     */
-    // selectedCode(value) {
-    //   if (!value) {
-    //     alert('저를 선택하시면 안됩니다')
-    //     return
-    //   }
-    //   this.assetType = value.assetCodeList
-    //   console.log("필터 :" + this.assetType)
-    //   console.log("FCL :" + value.assetCodeList)
-    //   console.log("FCL :" + this.GET_ASSET_CODE_LIST )
-    // },
+    showAssetCodeModal(){
+      this.AssetCodeModalState = true;
+    },
+
+    AssetCodeModalRowClick(payload){
+      this.accountCode=payload.acctCode
+    },
+
+    showDepartmentModal() {
+      this.DepartmentModalState = true;
+      console.log(this.DepartmentModal)
+    },
+
+    DepartmentModalRowClick(payload) {
+      this.department=payload.deptName
+    },
+
+
   },
 }
 </script>
