@@ -718,10 +718,28 @@ export default {
       const addLeftPrice = this.resultSlipForm.journals.map(v => Number(v.leftDebtorPrice)).reduce((pre, curr) => pre + curr, 0)
       const addRightPrice = this.resultSlipForm.journals.map(v => Number(v.rightCreditsPrice)).reduce((pre, curr) => pre + curr, 0)
 
-      const updateSlip = await this.EDIT_SLIP(this.resultSlipForm)
-      const SlipNo = updateSlip.id
-      console.log(SlipNo)
-      this.openAlert(SlipNo)
+      if(this.resultSlipForm.slipStatus.includes("승인")){
+        this.$swal.fire({
+          title: '승인된 전표는 수정이 불가합니다!',
+          text: `전표번호${this.resultSlipForm.id}`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '확인',
+        }).then(result => {
+          if (result.isConfirmed) {
+            this.$router.push({name: 'journalForm', params: {selectedSlip: this.resultSlipForm.id}})
+          }
+        })
+      }
+      else {
+
+        const updateSlip = await this.EDIT_SLIP(this.resultSlipForm)
+        const SlipNo = updateSlip.id
+        console.log(SlipNo)
+        this.openAlert(SlipNo)
+      }
     },
 
     /**
@@ -743,6 +761,8 @@ export default {
         }
       })
     },
+
+
 
 
     editCellHandler(data, name) {
