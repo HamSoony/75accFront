@@ -2,7 +2,7 @@
   <div style="font-family: 'Franklin Gothic Demi'">
     <div class="custom-search">
       <b-row>
-        <b-col md="4">
+        <b-col md="3">
           <b-form-group>
             <label>계정조회</label>
             <b-form-input
@@ -14,7 +14,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="4">
+        <b-col md="3">
           <b-form-group>
             <label>시작일</label>
             <b-form-input
@@ -25,7 +25,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="4">
+        <b-col md="3">
           <b-form-group>
             <label>종료일</label>
             <b-form-input
@@ -35,18 +35,22 @@
               class="d-inline-block"
             />
           </b-form-group>
+        </b-col>
 
+        <b-col md="3">
+          <b-button
+              variant="relief-primary"
+              class="d-block mt-2"
+              @click="searchJournal"
+          >
+            조회
+          </b-button>
         </b-col>
 
       </b-row>
 
     </div>
-    <b-button
-      variant="relief-primary"
-      @click="searchJournal"
-    >
-      조회
-    </b-button>
+
     <!-- table -->
     <div>
 
