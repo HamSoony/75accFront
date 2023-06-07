@@ -16,7 +16,8 @@ import {
   fetchFindAssetByAcctCode,
   saveAsset,
   fetchFindAssetByNameList,
-  fetchAccountSubjectList
+  fetchAccountSubjectList,
+  fetchAccountCodeBetween
 } from '@/api/account/base'
 
 
@@ -217,6 +218,17 @@ export default {
   async FETCH_ACCOUNT_CODE({ commit }, searchCode) { // 객체로 넘어오면 {}
     try {
       const { data } = await fetchAccountCode(searchCode)
+      commit('SET_ACCOUNTCODE_LIST', data.accountList)
+      return data
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  // ID값 사이 계정과목 찾기
+  async FETCH_ACCOUNT_CODE_BETWEEN({ commit }, payload) { // 객체로 넘어오면 {}
+    try {
+      const { data } = await fetchAccountCodeBetween(payload)
       commit('SET_ACCOUNTCODE_LIST', data.accountList)
       return data
     } catch (err) {

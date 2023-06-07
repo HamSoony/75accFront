@@ -157,8 +157,8 @@ export default {
       console.log("계정코드 선택"+ selectedItem.row)
       console.log("계정코드 선택 accountCode"+ selectedItem.row.acctName)
       console.log("계정코드 선택 accountInnerCode"+ selectedItem.row.acctInnerCode)
-      const { acctCode,acctName } = selectedItem.row
-      this.value = { acctCode,acctName }
+      const { acctInnerCode,acctName } = selectedItem.row
+      this.value = { acctInnerCode,acctName }
       this.$emit('input', this.value)
     },
 
