@@ -336,12 +336,12 @@
                   <div style="display: flex">
                     <b-form-input
                         type="text"
-                        v-model:value="newJournalDetailForm.accountControlName"
+                        v-model:value="newJournalDetailForm.carNumber"
                     />
                     <b-form-input
                         size="10"
                         type="text"
-                        v-model:value="newJournalDetailForm.accountControlName"
+                        v-model:value="newJournalDetailForm.carName"
                     />
                   </div>
                 </b-col>
@@ -607,10 +607,12 @@ export default {
       newSlipForm: [],
       newJournalForm: [],
       newJournalDetailForm: {
-        wpCode:'',
-        wpName:'',
-        deptCode:'',
-        deptName:''
+        wpCode: '',
+        wpName: '',
+        deptCode: '',
+        deptName: '',
+        carNumber: '',
+        carName: '',
       },
       /**
        * 모든 결과를 담는 객체
@@ -646,6 +648,7 @@ export default {
       this.newSlipForm.push(this.slipForm)
       this.slipForm.journals.forEach( (j) => this.newJournalForm.push(j))
       this.totalJournal()
+      console.log("this.resultSlipForm",this.resultSlipForm)
     },200)
 
   },
@@ -668,7 +671,7 @@ export default {
       this.newSlipForm.push(this.$refs.inputSlipForm.slipForm)
       this.resultSlipForm = {...this.$refs.inputSlipForm.slipForm, ...this.resultSlipForm}
       this.addBtStatus = true
-      this.newSlipForm = this.newSlipForm.map(item => ({...item, isEdit: false}));
+      this.newSlipForm = this.newSlipForm.map(item => ({...item, isEdit: false}))
     },
     /**
      *  분개 모달완료시 실행
@@ -677,20 +680,24 @@ export default {
       this.newJournalForm.push({...this.$refs.inputJounalForm.journalForm,
         id: this.id,
         journalDetail: {
-          wpCode:'',
-          wpName:'',
-          deptCode:'',
-          deptName:''
+          wpCode: '',
+          wpName: '',
+          deptCode: '',
+          deptName: '',
+          carNumber: '',
+          carName: '',
         }
       })
       this.resultSlipForm.journals.push({
         ...this.$refs.inputJounalForm.journalForm,
         id: this.id,
         journalDetail: {
-          wpCode:'',
-          wpName:'',
-          deptCode:'',
-          deptName:''
+          wpCode: '',
+          wpName: '',
+          deptCode: '',
+          deptName: '',
+          carNumber: '',
+          carName: '',
         }
       })
       this.id += 1
