@@ -118,6 +118,21 @@ function fetchAccountCode(searchCode) {
 }
 
 /**
+ * 계정코드 조건에 따라 조회
+ * @param searchCode
+ * @returns {*}
+ */
+function fetchAccountCodeBetween(payload) {
+    return accountApi.get(`/account/between`,
+        {
+            params:{
+                start:payload.start,
+                end:payload.end
+            }
+        })
+}
+
+/**
  * 계정코드 전체조회
  * @param searchCode
  * @returns {*}
@@ -246,5 +261,6 @@ export {
     fetchCurrentAssetList,
     fetchFindAssetByCodeList,
     fetchFindAssetByNameList,
-    fetchAccountSubjectList
+    fetchAccountSubjectList,
+    fetchAccountCodeBetween
 }

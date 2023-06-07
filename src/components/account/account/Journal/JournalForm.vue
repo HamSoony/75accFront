@@ -102,13 +102,13 @@
                   <div style="display: flex">
                     <b-form-input
                         type="text"
-                        v-model:value="newJournalDetailForm.deptCode"
-                        @click="showDepartmentModal"/>
+                        v-model:value="newJournalDetailForm.acctCode"
+                        @click="showAcctCodeModal"/>
                     <b-form-input
                         size="10"
                         type="text"
-                        v-model:value="newJournalDetailForm.deptName"
-                        @click="showWorkPlaceModal"/>
+                        v-model:value="newJournalDetailForm.acctName"
+                        @click="showAcctCodeModal"/>
                   </div>
                 </b-col>
 
@@ -337,11 +337,13 @@
                     <b-form-input
                         type="text"
                         v-model:value="newJournalDetailForm.carNumber"
+                        @input="carInputCheck('number')"
                     />
                     <b-form-input
                         size="10"
                         type="text"
                         v-model:value="newJournalDetailForm.carName"
+                        @input="carInputCheck('name')"
                     />
                   </div>
                 </b-col>
@@ -500,6 +502,20 @@
         </p>
       </b-modal>
 
+      <b-modal
+          id="AccountCodeBetweenModal"
+          ref="AccountCodeBetweenModal"
+          :title="'자금과목찾기'"
+          v-model:value="AccountCodeBetweenModal"
+      >
+        <p class="my-5">
+          <AccountCodeModal3
+              v-model:value="resultAccountCodeBetween"
+              :condition="'accountCode'"
+          />
+        </p>
+      </b-modal>
+
 
     </div>
 
@@ -515,12 +531,15 @@ import AccountCodeModal2 from '@/components/account/modal/AccountCodeModal2.vue'
 import AccountCustomerCodeModal2 from '@/components/account/modal/AccountCustomerCodeModal2'
 import DepartmentModal from '@/components/account/modal/DepartmentModal'
 import departmentModal from "@/components/account/modal/DepartmentModal.vue";
+import AccountCodeModal3 from '@/components/account/modal/AccountCodeModal3.vue'
+
 export default {
   components: {
     BTable,
     MenuSlipForm,
     InputForm,
     AccountCodeModal2,
+    AccountCodeModal3,
     AccountCustomerCodeModal2,
     DepartmentModal
   },
@@ -529,6 +548,7 @@ export default {
     return {
       resultAccountCode: '',
       resultCustomerCode: '',
+      resultAccountCodeBetween:'',
       dataIndex:'',
       example:'accountCode',
       totalForm:[
@@ -564,6 +584,8 @@ export default {
       workPlaceModal:false,
 
       DepartmentModalState:false,
+
+      AccountCodeBetweenModal: false,
 
       departmentSelectedData:{},
 
@@ -613,6 +635,8 @@ export default {
         deptName: '',
         carNumber: '',
         carName: '',
+        acctCode: '',
+        acctName: '',
       },
       /**
        * 모든 결과를 담는 객체
@@ -686,6 +710,8 @@ export default {
           deptName: '',
           carNumber: '',
           carName: '',
+          acctCode: '',
+          acctName: '',
         }
       })
       this.resultSlipForm.journals.push({
@@ -698,6 +724,8 @@ export default {
           deptName: '',
           carNumber: '',
           carName: '',
+          acctCode: '',
+          acctName: '',
         }
       })
       this.id += 1
@@ -842,10 +870,9 @@ export default {
       this.dataIndex=index
       this.selectedJournal=item
       console.log("this.newJournalDetailForm.wpCode",this.newJournalDetailForm)
-      this.newJournalDetailForm.wpCode=item.journalDetail.wpCode
-      this.newJournalDetailForm.wpName=item.journalDetail.wpName
-      this.newJournalDetailForm.deptCode=item.journalDetail.deptCode
-      this.newJournalDetailForm.deptName=item.journalDetail.deptName
+      this.newJournalDetailForm=item.journalDetail
+
+
       console.log("JournalClicked", this.selectedJournal)
 
       if (item.acctName.includes("현금")) {
@@ -894,7 +921,24 @@ export default {
       this.resultSlipForm.journals[this.dataIndex].journalDetail.deptName=payload.deptName
 
 
-    }
+    },
+
+    carInputCheck(payload) {
+      if(payload === "number"){
+        this.resultSlipForm.journals[this.dataIndex].journalDetail.carNumber=this.newJournalDetailForm.carNumber
+      }
+      else{
+        this.resultSlipForm.journals[this.dataIndex].journalDetail.carName=this.newJournalDetailForm.carName
+      }
+
+
+    },
+
+    // 자금과목모달 열기
+    showAcctCodeModal() {
+      this.AccountCodeBetweenModal=true;
+    },
+
   },
 
   watch: {
@@ -914,6 +958,18 @@ export default {
       this.newJournalForm[this.dataIndex].cterName=val.cterName
       this.resultSlipForm.journals[this.dataIndex].cterCode=val.cterCode
       this.resultSlipForm.journals[this.dataIndex].cterName=val.cterName
+    },
+
+    resultAccountCodeBetween: function (val) {
+      console.log("resultAccountCode", val);
+      console.log("this.newJournalForm", this.newJournalForm)
+      this.newJournalForm[this.dataIndex].journalDetail.acctCode= val.acctInnerCode
+      this.newJournalForm[this.dataIndex].journalDetail.acctName = val.acctName
+      this.resultSlipForm.journals[this.dataIndex].journalDetail.acctCode = val.acctInnerCode
+      this.resultSlipForm.journals[this.dataIndex].journalDetail.acctName = val.acctName
+      this.newJournalDetailForm.acctCode=val.acctInnerCode
+      this.newJournalDetailForm.acctName=val.acctName
+
     },
 
 
