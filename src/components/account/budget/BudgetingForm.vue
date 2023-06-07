@@ -3,8 +3,27 @@
     <div class="custom-search">
       <h1> {{year}}년 예산편성</h1>
       <b-row>
-        <b-col md="4">
+        <b-col mb="3">
           <b-form-group>
+            <label>예산코드</label>
+            <b-form-input
+                v-model="searchBudgetCode"
+                placeholder="Search"
+                type="text"
+                class="d-inline-block"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col mb="3">
+          <b-button
+              variant="relief-primary"
+              style="margin: 24px"
+          >
+            검색
+          </b-button>
+        </b-col>
+        <b-col mb="3">
+          <b-form-group >
             <label>부서명</label>
             <b-form-input
                 v-model="deptCode"
@@ -15,7 +34,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col>
+        <b-col mb="3">
           <b-button
               variant="relief-primary"
               style="margin: 24px"
@@ -41,21 +60,6 @@
     <b-row>
 
       <b-col>
-        <b-row class="align-items-center justify-content-center">
-          <b-col md="8">
-            <b-form-input
-                v-model="searchBudgetCode"
-                placeholder="예산코드 검색"
-            />
-          </b-col>
-          <b-col>
-            <b-button
-                variant="relief-primary"
-            >
-              검색
-            </b-button>
-          </b-col>
-        </b-row>
         <b-row>
           <b-col>
             <div class="table-container">

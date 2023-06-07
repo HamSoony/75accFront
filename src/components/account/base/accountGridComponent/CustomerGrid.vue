@@ -24,6 +24,11 @@
             </b-button>
           </template>
         </b-col>
+        <b-col cols="12" md="2" class="text-md-right">
+          <b-button style="white-space: nowrap;" @click="exlcelFile">
+            엑셀로 내보내기
+          </b-button>
+        </b-col>
       </b-row>
     </div>
 
@@ -75,7 +80,7 @@
 <script>
 import TableEditModal from '@/components/common/modal/TableEditModal.vue'
 import TableChangeModal from '@/components/common/modal/TableChangeModal.vue'
-
+import Xlsx from 'xlsx'
 import BCardCode from '@core/components/b-card-code/BCardCode.vue'
 import {
   BAvatar,
@@ -268,6 +273,12 @@ export default {
       /*       const newObject = item.detailCode
 
             this.itemCodeInput = newObject */
+    },
+    exlcelFile(){
+      const workBook = Xlsx.utils.book_new() // 엑셀파일 하나생성
+      const workSheet = Xlsx.utils.json_to_sheet(this.customerList) //엑셀 워크시트로 json 내보내기, 배열만 가능
+      Xlsx.utils.book_append_sheet(workBook, workSheet, 'example') //workbook에 워크시트 추가, 시트명은 'example'
+      Xlsx.writeFile(workBook, 'example.xlsx') // 엑셀 파일을 내보낸다. 엑셀 파일 저장명은 'example.xlsx'(확장자명까지 기입)
     }
   },
 }
