@@ -336,12 +336,12 @@
                   <div style="display: flex">
                     <b-form-input
                         type="text"
-                        v-model:value="newJournalDetailForm.accountControlName"
+                        v-model:value="newJournalDetailForm.carNumber"
                     />
                     <b-form-input
                         size="10"
                         type="text"
-                        v-model:value="newJournalDetailForm.accountControlName"
+                        v-model:value="newJournalDetailForm.carName"
                     />
                   </div>
                 </b-col>
@@ -586,7 +586,9 @@ export default {
         wpCode: '',
         wpName: '',
         deptCode: '',
-        deptName: ''
+        deptName: '',
+        carNumber: '',
+        carName: '',
       },
       /**
        * 모든 결과를 담는 객체
@@ -647,7 +649,9 @@ export default {
           wpCode: '',
           wpName: '',
           deptCode: '',
-          deptName: ''
+          deptName: '',
+          carNumber: '',
+          carName: '',
         }
       })
       this.resultSlipForm.journals.push({
@@ -657,7 +661,9 @@ export default {
           wpCode: '',
           wpName: '',
           deptCode: '',
-          deptName: ''
+          deptName: '',
+          carNumber: '',
+          carName: '',
         }
       })
       this.id += 1
