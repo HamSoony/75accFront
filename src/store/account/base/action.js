@@ -11,10 +11,14 @@ import {
   saveCustomer,
   fetchAssetTypeCode,
   fetchCurrentAssetList,
+  fetchFindAssetByDepartment,
+  fetchFindAssetByProgress,
+  fetchFindAssetByAcctCode,
   saveAsset,
   fetchFindAssetByNameList,
-  fetchAccountSubjectList,
+  fetchAccountSubjectList
 } from '@/api/account/base'
+
 
 export default {
   /**
@@ -68,6 +72,12 @@ export default {
   //   }
   // },
 
+  /**
+   * 자산리스트 전체조회
+   * @param
+   * @returns {Promise<*>}
+   * @constructor
+   */
   async FETCH_CURRENT_ASSET_LIST({ commit }) {
     try {
       const { data } = await fetchCurrentAssetList()
@@ -78,6 +88,12 @@ export default {
     }
   },
 
+  /**
+   * 자산리스트 조회(자산명, assetName)
+   * @param
+   * @returns {Promise<*>}
+   * @constructor
+   */
   async FETCH_FIND_ASSET_NAME({ commit }, assetName) {
     try {
       console.log(assetName)
@@ -88,6 +104,64 @@ export default {
       throw new Error(err)
     }
   },
+
+  /**
+   * 자산리스트 조회(부서, department)
+   * @param
+   * @returns {Promise<*>}
+   * @constructor
+   */
+  async FETCH_FIND_ASSET_BY_DEPARTMENT({ commit }, department) {
+    try {
+      console.log(department)
+      const {data} = await fetchFindAssetByDepartment(department)
+      console.log(data)
+      commit('SET_FIND_ASSET_BY_DEPARTMENT', data)
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  /**
+   * 자산리스트 조회(취득일자, progress)
+   * @param
+   * @returns {Promise<*>}
+   * @constructor
+   */
+  async FETCH_FIND_ASSET_BY_PROGRESS({ commit }, progress) {
+    try {
+      console.log(progress)
+      const {data} = await fetchFindAssetByProgress(progress)
+      console.log(data)
+      commit('SET_FIND_ASSET_BY_PROGRESS', data)
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  /**
+   * 자산리스트 조회(자산분류코드, acctCode)
+   * @param
+   * @returns {Promise<*>}
+   * @constructor
+   */
+  async FETCH_FIND_ASSET_BY_ACCTCODE({ commit }, acctCode) {
+    try {
+      console.log("acctCode: "+ acctCode)
+      const {data} = await fetchFindAssetByAcctCode(acctCode)
+      console.log(data)
+      commit('SET_FIND_ASSET_BY_ACCTCODE', data)
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+
+  /**
+   * 자산등록
+   * @param
+   * @returns {Promise<*>}
+   * @constructor
+   */
   async SAVE_ASSET({commit}, newAsset){
     try {
       console.log( "new " + newAsset)
