@@ -2,7 +2,7 @@
   <b-card
       no-body
       style="font-family: '배달의민족 도현'; max-height: 1000px"
-      class="scrollStyle"
+
   >
 
     <div class="m-2">
@@ -34,14 +34,14 @@
 
     <b-row />
     <div
-        style="overflow-y: auto; overflow-x: auto; max-height: 410px;"
-        class="scrollStyle"
+        style="overflow-y: auto; overflow-x: auto; max-height: 100%; "
+
     >
       <b-table
           ref="table"
           :items="customerList"
           :fields="tableColumnsData"
-          style="overflow: auto; width: 100%; "
+          style="overflow: auto; width: 100%; max-height: 100% "
           show-empty
           empty-text="No matching records found"
           selectable
